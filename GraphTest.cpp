@@ -917,25 +917,29 @@ void GraphTest::setMenu(T_Menu* menu,int w,int h,wstring path,wstring item[])
 void GraphTest::LoadWaveNPC()
 {
 	GAMELAYER gameLayer;
-	levelNPCNum = waveNum[guan-1] * monster;
+	levelNPCNum = waveNum[guan - 1] * monster;
 	for (int i = 0; i < levelNPCNum; i++)
 	{
+		if (frameCount >= NPCFrame[i].frame - 10 && frameCount < NPCFrame[i].frame)
+		{
+			lightflag = true;
+		}
 		if (frameCount == NPCFrame[i].frame)
 		{
 			lightflag = false;
 			//new 怪物对象,然后加入npcset
 			int number = NPCFrame[i].minfo - 1;
-			MonsterSprite* tempSprite = new MonsterSprite(mInfo[number].imgName,140,121);
+			MonsterSprite* tempSprite = new MonsterSprite(mInfo[number].imgName, 140, 121);
 			MONSTER spInfo;
 			spInfo.X = stationX[guan - 1];
 			spInfo.Y = stationY[guan - 1];
 			//设定初始方向
-			if(guan==1) monsterBegin = 0;
-			else if(guan==2) monsterBegin = 5;
-			else if(guan==3) monsterBegin = 19;
-			else if (guan == 4) monsterBegin = 32; 
+			if (guan == 1) monsterBegin = 0;
+			else if (guan == 2) monsterBegin = 5;
+			else if (guan == 3) monsterBegin = 19;
+			else if (guan == 4) monsterBegin = 32;
 			spInfo.dir = monsterDir[monsterBegin];		//初始化方向
-			if(spInfo.dir==DIR_LEFT) spInfo.Rotation = TRANS_HFLIP_NOROT;
+			if (spInfo.dir == DIR_LEFT) spInfo.Rotation = TRANS_HFLIP_NOROT;
 			else spInfo.Rotation = mInfo[number].Rotation;
 
 			spInfo.imgName = mInfo[number].imgName;
@@ -947,6 +951,7 @@ void GraphTest::LoadWaveNPC()
 			spInfo.Visible = true;
 			//spInfo.Active = true;
 			//spInfo.Dead = false;
+			spInfo.instance = mInfo[number].instance;
 			spInfo.ratio = mInfo[number].ratio;
 			tempSprite->Initiate(spInfo);
 			tempSprite->SetLayerTypeID(LAYER_NPC);
