@@ -73,6 +73,7 @@ private:
 	T_Graph* time4;					//go
 	T_Graph* start;					//开始
 	T_Graph* pause;					//暂停
+	T_Graph* luolife;				//萝卜生命的
 	//T_Graph* price[11];				//钱的图片
 
 	//----------菜单类对象-----------
@@ -112,11 +113,15 @@ private:
 
 	//---------游戏其他类对象---------
 	T_Scene* t_scence;					//游戏场景
+	T_Graph light;						//光晕
+	bool lightflag = false;
+	T_Sprite* playLuo;					//萝卜
 
 	//----------游戏角色相关集合-------------
 	static const int NPCNUM = 100;		//关卡最大怪物数
 	vMonsterSet npc_set;				//NPC角色集合
 	vMonsterSet waveNPC_set;			//每一波NPC角色集合
+	vSpriteSet light_set;              //光晕集合
 	vSpriteSet bomb_set;				//炮弹集合
 	vSpriteSet explosion_set;			//爆炸效果集合
 	sPropertySet proper_set;			//道具集合
@@ -124,6 +129,9 @@ private:
 	//----------动画帧序列---------
 	static int Explosion_F[4];			//爆炸效果帧序列
 	static int Monster_M[6];			//怪物帧序列
+	static int Monster_L[11];
+	static int luo_lF[100];				//好萝卜的
+	static int luo_eF[9];				//被吃了的萝卜
 
 	T_Sprite* player;				//游戏玩家
 	T_Sprite* bomb;					//游戏玩家
@@ -139,7 +147,6 @@ private:
 	int lifeNum = 10;					//总生命值
 	int life = 10;						//当前生命值
 	int price = 500;					//当前金币数
-	int monsterToBar = 0;                   //怪物与障碍碰撞次数
 	int monsterBegin = 0;                   //怪物方向位置
 	int monsterDir[42] = { DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_UP,DIR_RIGHT,
 		DIR_UP,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,
@@ -148,14 +155,12 @@ private:
 	
 	int monster = 5;					//每一波怪物数
 	int waveNum[4] = { 6,8,10,10 };		//每一关总波数
-	int stationX[4] = { 170,250,200,520 };               //每一关入口X     
-	int stationY[4] = { 133,400,420,490 };              //每一关入口Y
-	int endX[4] = { 850,850,850,800 };               //每一关出口X     
-	int endY[4] = { 133,450,420,133 };              //每一关出口Y
-	static int luo_lF[14];
-	static int luo_eF[9];
+	int stationX[4] = { 170,240,200,495 };               //每一关入口X     
+	int stationY[4] = { 133,395,420,483 };              //每一关入口Y
+	int endX[4] = { 890,890,960,820 };               //每一关出口X     
+	int endY[4] = { 133,500,420,133 };              //每一关出口Y
+
 	
-	T_Graph* luolife;
 
 	
 	int levelNPCNum = 0;				//当前关卡怪物数
@@ -165,8 +170,8 @@ private:
 	static TOWERS tInfo[6];				//炮塔信息
 	static MONSTER mInfo[8];			//怪物信息
 	static PROPERTY pInfo[10];			//道具信息
-	long lastMonsterTime;                //上一个怪物的加载时间
-	long thisMonsterTime;                //当前怪物的加载时间
+	static SPRITEINFO lInfo[4];         //光晕信息
+	
 
 	static LPCTSTR tower_files[6];
 	TOWERS tower;

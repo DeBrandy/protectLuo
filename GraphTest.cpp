@@ -47,15 +47,21 @@ int GraphTest::SUNB3[3] = { 49,50,51 };
 LPCTSTR GraphTest::tower_files[6] = { L".\\res\\tower\\bottle.png",L".\\res\\tower\\sun.png",L".\\res\\tower\\bluestaratt.png",L".\\res\\tower\\fan.png", L".\\res\\tower\\shit.png",L".\\res\\tower\\snow.png" };
 
 MONSTER GraphTest::mInfo[8] = {
-	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向
-	{0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 30 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 28 ,0.6 ,TRANS_NONE, DIR_RIGHT }
+	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向 与地图碰撞距离
+	{ 0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 30 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 28 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
+};
+SPRITEINFO GraphTest::lInfo[4] = {
+	{ 170, 133,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
+	{ 240, 395,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
+	{ 200, 420,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
+	{ 495, 483,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
 };
 PROPERTY GraphTest::pInfo[10] = {
 	// 道具图片   道具生命值    道具奖励金   图片缩放比率
@@ -72,6 +78,9 @@ PROPERTY GraphTest::pInfo[10] = {
 };
 int GraphTest::Explosion_F[4] = {0,1,2,3};
 int GraphTest::Monster_M[6] = { 0,0,0,1,1,1 };
+int GraphTest::Monster_L[11] = { 0,0,0,0,1,1,1,1,1,1,1 };
+int GraphTest::luo_lF[100]{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8,9,10,11,12,13,13 };
+int GraphTest::luo_eF[9]{ 14,15,16,17,18,19,19,20,20 };
 GraphTest::GraphTest(HINSTANCE hInstance, LPCTSTR szWindowClass, LPCTSTR szTitle,
 	WORD Icon, WORD SmIcon, int iWidth, int iHeight) :T_Engine(hInstance,
 		szWindowClass, szTitle, Icon, SmIcon, iWidth, iHeight)
@@ -133,6 +142,7 @@ void GraphTest::GameLogic()
 		updateNPCLife();
 		updateProLife();
 		updateAnimation();
+		updateLuo();
 	}
 }
 
@@ -210,9 +220,15 @@ void GraphTest::GamePaint(HDC hdc)
 			t_scence->Draw(hdc, 0, 0);
 			break;
 		}
+		if (lightflag)
+		{
+			if (frameCount % 6<3)
+				light.PaintRegion(light.GetBmpHandle(), hdc, lInfo[guan - 1].X, lInfo[guan - 1].Y, 0, 0, 98, 92, 1, TRANS_NONE, 200);
+			else
+				light.PaintRegion(light.GetBmpHandle(), hdc, lInfo[guan - 1].X, lInfo[guan - 1].Y, 98, 0, 98, 92, 1, TRANS_NONE, 200);
+		}
 		countDown(hdc);
 		vMonsterSet::iterator p;
-		
 		for (p = npc_set.begin(); p != npc_set.end(); p++)
 		{
 			
@@ -242,6 +258,7 @@ void GraphTest::GamePaint(HDC hdc)
 		infoRec.Height = 40;
 		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
 
+		luolife->PaintRegion(luolife->GetBmpHandle(), hdc, playLuo->GetX() + 70, playLuo->GetY() + 15, 0, (life - 1) * 37, 74, 36, 0.8);
 
 		run_speed.DrawMenu(hdc,0.8);
 		run_start.DrawMenu(hdc,0.8);
@@ -905,6 +922,7 @@ void GraphTest::LoadWaveNPC()
 	{
 		if (frameCount == NPCFrame[i].frame)
 		{
+			lightflag = false;
 			//new 怪物对象,然后加入npcset
 			int number = NPCFrame[i].minfo - 1;
 			MonsterSprite* tempSprite = new MonsterSprite(mInfo[number].imgName,140,121);
@@ -1005,7 +1023,32 @@ void GraphTest::LoadPlayer(int x, int y)
 //加载萝卜
 void GraphTest::LoadLuo(int x,int y)
 {
-	
+	GAMELAYER gameLayer;
+	SPRITEINFO pro_Info;
+	pro_Info.X = x;
+	pro_Info.Y = y;
+	pro_Info.Dead = false;
+	pro_Info.Rotation = TRANS_NONE;
+	pro_Info.Ratio = 0.6f;
+	pro_Info.Alpha = 255;
+	pro_Info.Visible = true;
+	pro_Info.Score = 10;
+	pro_Info.Dir = DIR_LEFT;
+	pro_Info.Speed = 0;
+	pro_Info.Active = true;
+	pro_Info.Level = 1;
+	int sp_width = 118;
+	int sp_height = 112;
+	playLuo = new T_Sprite(L"res\\luobo.png", sp_width, sp_height);
+	playLuo->Initiate(pro_Info);
+	playLuo->SetLayerTypeID(LAYER_NPC);
+	playLuo->SetSequence(luo_lF, 100);
+
+	gameLayer.layer = playLuo;
+	gameLayer.type_id = LAYER_NPC;
+	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
+	gameLayer.layer->setZorder(gameLayer.z_order);
+	t_scence->Append(gameLayer);
 }
 //加载道具
 void GraphTest::LoadProp(int t,int x,int y)
@@ -1175,6 +1218,8 @@ void GraphTest::LoadImg()
 	time4 = new T_Graph(L"res\\tool\\go.png");
 	start = new T_Graph(L"res\\menu\\start.png");
 	pause = new T_Graph(L"res\\menu\\zan.png");
+	light.LoadImageFile(L"res\\monster\\light.png");
+	luolife = new T_Graph(L"res\\tool\\life.png");
 }
 
 void GraphTest::drawBlood(HDC hdc)
@@ -1253,6 +1298,13 @@ void GraphTest::updateAnimation()
 		(*p1)->LoopFrame();
 
 	}
+	vSpriteSet::iterator p2;
+	for (p2 = light_set.begin(); p2 != light_set.end(); p2++)
+	{
+		(*p2)->LoopFrameOnce();
+
+	}
+	playLuo->LoopFrame();
 }
 //更新NPC位置
 void GraphTest::updateNPCPos()
@@ -1262,13 +1314,16 @@ void GraphTest::updateNPCPos()
 		int dir = npc_set.at(i)->GetDir();
 		int xspeed = 0;
 		int yspeed = 0;
-		if (npc_set.at(i)->CollideWith(t_scence->getBarrier()))
+		if (npc_set.at(i)->CollideWith(t_scence->getBarrier(), npc_set.at(i)->getBarStance()))
 		{
-			monsterToBar++;
-			dir = monsterDir[monsterBegin + monsterToBar];
+
+			npc_set.at(i)->setMonsterToBar();
+			int t = npc_set.at(i)->getMonsterToBar();
+			dir = monsterDir[monsterBegin + t];
+			npc_set.at(i)->SetDir(dir);
 		}
-		/*if (dir == DIR_LEFT) npc_set.at(i)->SetRatio(TRANS_HFLIP_NOROT);
-		else npc_set.at(i)->SetRatio(TRANS_NONE);*/
+		if (dir == DIR_LEFT) npc_set.at(i)->SetRotation(TRANS_HFLIP_NOROT);
+		else npc_set.at(i)->SetRotation(TRANS_NONE);
 		if (dir == DIR_LEFT)
 		{
 			xspeed = -npc_set.at(i)->GetSpeed() * speedf;
@@ -1338,7 +1393,16 @@ void GraphTest::updateBombPos(int dir)
 
 void GraphTest::updateLuo()
 {
-
+	life = playLuo->GetScore();
+	if (life < 10 && life > 0 && playLuo->IsActive() == false)
+	{
+		playLuo->SetSequence(&luo_eF[10 - life - 1], 1);
+		playLuo->SetActive(true);
+	}
+	if (life == 0 && playLuo->IsVisible() == true)
+	{
+		playLuo->SetVisible(false);
+	}
 }
 void GraphTest::updatePlayerLevel()
 {
@@ -1381,7 +1445,7 @@ void GraphTest::updateNPCLife()
 			{
 				(*p)->SetVisible(false);
 				LoadExplosion((*p)->GetX(), (*p)->GetY());
-				//price = price + (*p)->GetScore();
+				price = price + (*p)->GetScore();
 
 			}
 		}
@@ -1409,7 +1473,6 @@ void GraphTest::updateProLife()
 //加载关卡
 void GraphTest::LoadGuan(int g)
 {
-	monsterToBar = 0;
 	t_scence = NULL;
 	proper_set.clear();
 	t_scence = new T_Scene();
@@ -1508,6 +1571,7 @@ void GraphTest::LoadGuan(int g)
 	}
 	LoadPlayer(0, 0);
 	LoadBomb(0, 0);
+	LoadLuo(endX[g - 1], endY[g - 1]);
 }
 //倒计时
 void GraphTest::countDown(HDC hdc)
