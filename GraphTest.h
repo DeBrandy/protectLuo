@@ -11,7 +11,33 @@ typedef vector<MonsterSprite*> vMonsterSet;
 typedef vector<S_property*> sPropertySet;
 typedef vector<T_Sprite*> vSpriteSet;
 
-
+/*typedef struct
+{
+	int x;
+	int y;
+	T_Graph tower;
+	int fcount;
+	LPCTSTR imgName;			// 炮塔图片
+	double	Speed[3];			// 炮塔攻速
+	int		Harm[3];			// 炮塔伤害值
+	int		Range[3];			// 炮塔攻击范围
+	int     type;				// 炮塔攻击类型
+	int     PriceBuy[3];		// 炮塔买进价格
+	int     PriceSell[3];		// 炮塔卖出价格
+	int     Dcrease;			// 炮塔造成的减速量
+	float   ratio;				// 图片缩放比率
+}TOWERS;*/
+struct NPC
+{
+	int x;
+	int y;
+	float ratio;
+	int fcount;
+	int dir;
+	LPCTSTR name;
+	T_Graph npc;
+	int speed;
+};
 typedef struct
 {
 	int frame;					//第几帧出现
@@ -47,8 +73,7 @@ private:
 	T_Graph* time4;					//go
 	T_Graph* start;					//开始
 	T_Graph* pause;					//暂停
-	T_Graph* luolife;				//萝卜生命的
-
+	//T_Graph* price[11];				//钱的图片
 
 	//----------菜单类对象-----------
 	T_Menu t_menu;                  //游戏菜单类的对象
@@ -63,6 +88,14 @@ private:
 	MyMenu run_speed;				//运行界面的速度切换
 	MyMenu run_start;				//运行界面的开始暂停
 	MyMenu run_return;				//运行界面的返回
+
+	MyMenu choosefan;
+	MyMenu choosebluestar;
+	MyMenu choosebottle;
+	MyMenu chooseshit;
+	MyMenu choosesnow;
+	MyMenu choosesun;
+	MyMenu chooselevel;
 									//指针
 	T_Menu* p_menu;
 	T_Menu* p_aboutmenu;
@@ -79,15 +112,10 @@ private:
 
 	//---------游戏其他类对象---------
 	T_Scene* t_scence;					//游戏场景
-	//T_Sprite* light;					//光晕
-	T_Graph light;						//光晕
-	bool lightflag = false;
-	T_Sprite* playLuo;					//萝卜
 
 	//----------游戏角色相关集合-------------
 	static const int NPCNUM = 100;		//关卡最大怪物数
 	vMonsterSet npc_set;				//NPC角色集合
-	vSpriteSet light_set;              //光晕集合
 	vMonsterSet waveNPC_set;			//每一波NPC角色集合
 	vSpriteSet bomb_set;				//炮弹集合
 	vSpriteSet explosion_set;			//爆炸效果集合
@@ -96,9 +124,9 @@ private:
 	//----------动画帧序列---------
 	static int Explosion_F[4];			//爆炸效果帧序列
 	static int Monster_M[6];			//怪物帧序列
-	static int Monster_L[11];
-	static int luo_lF[100];				//好萝卜的
-	static int luo_eF[9];				//被吃了的萝卜
+
+	T_Sprite* player;				//游戏玩家
+	T_Sprite* bomb;					//游戏玩家
 
 	//----------关卡常量----------
 	int guanNum = 4;					//总关卡数
@@ -111,6 +139,7 @@ private:
 	int lifeNum = 10;					//总生命值
 	int life = 10;						//当前生命值
 	int price = 500;					//当前金币数
+	int monsterToBar = 0;                   //怪物与障碍碰撞次数
 	int monsterBegin = 0;                   //怪物方向位置
 	int monsterDir[42] = { DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_UP,DIR_RIGHT,
 		DIR_UP,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,
@@ -119,11 +148,16 @@ private:
 	
 	int monster = 5;					//每一波怪物数
 	int waveNum[4] = { 6,8,10,10 };		//每一关总波数
-	int stationX[4] = { 170,240,200,495 };               //每一关入口X     
-	int stationY[4] = { 133,395,420,483 };              //每一关入口Y
-	int endX[4] = { 890,890,960,820 };               //每一关出口X     
-	int endY[4] = { 133,500,420,133 };              //每一关出口Y
+	int stationX[4] = { 170,250,200,520 };               //每一关入口X     
+	int stationY[4] = { 133,400,420,490 };              //每一关入口Y
+	int endX[4] = { 850,850,850,800 };               //每一关出口X     
+	int endY[4] = { 133,450,420,133 };              //每一关出口Y
+	static int luo_lF[14];
+	static int luo_eF[9];
+	
+	T_Graph* luolife;
 
+	
 	int levelNPCNum = 0;				//当前关卡怪物数
 	int waveTime = 8000;				//每一波的间隔时间
 	int NPCTime = 1000;					//加载NPC的间隔时间
@@ -131,31 +165,88 @@ private:
 	static TOWERS tInfo[6];				//炮塔信息
 	static MONSTER mInfo[8];			//怪物信息
 	static PROPERTY pInfo[10];			//道具信息
-	static SPRITEINFO lInfo[4];         //光晕信息
 	long lastMonsterTime;                //上一个怪物的加载时间
 	long thisMonsterTime;                //当前怪物的加载时间
 
+	static LPCTSTR tower_files[6];
+	TOWERS tower;
+	static float rand_size[5];
+	static int rand_speed[5];
+	static LPCTSTR npc_file;
+	static int NPC_WIDTH;
+	static int NPC_HEIGHT;
+	vector<NPC> vecNpc;
+	static int NPC_NUM;
+	
+	static int FAN1[4];
+	static int FAN2[4];
+	static int FAN3[4];
+	static int FANB1[5];
+	static int FANB2[5];
+	static int FANB3[5];
+
+	static int BS1[3];
+	static int BS2[3];
+	static int BS3[3];
+	static int BSB1[7];
+	static int BSB2[7];
+	static int BSB3[7];
+
+	static int B1[4];
+	static int B2[4];
+	static int B3[4];
+	static int BB1[5];
+	static int BB2[5];
+	static int BB3[5];
+
+	static int S1[3];
+	static int S2[3];
+	static int S3[3];
+	static int SB1[3];
+	static int SB2[3];
+	static int SB3[3];
+
+	static int SN1[3];
+	static int SN2[3];
+	static int SN3[3];
+	static int SNB1[3];
+	static int SNB2[3];
+	static int SNB3[3];
+
+	static int SUN1[3];
+	static int SUN2[3];
+	static int SUN3[3];
+	static int SUNB1[3];
+	static int SUNB2[3];
+	static int SUNB3[3];
+
+	int towerflag;
+	int towerkind = 1;
+	int run = 0;
+
 	//----------资源加载-------------
-	void LoadWaveNPC();						//加载固定个数的固定怪物     **
-	void LoadMap(char* path);				//加载地图
-	void LoadPlayer();						//加载炮塔
-	void LoadLuo(int x,int y);				//加载萝卜
+	void LoadWaveNPC();		//加载固定个数的固定怪物     **
+	void LoadMap(char* path);			//加载地图
+	void LoadPlayer(int x, int y);		//加载炮塔
+	void LoadLuo(int x, int y);			//加载萝卜
 	void LoadProp(int t, int x, int y);		//加载道具
-	void loadMenu();						//加载菜单
+	void loadMenu();		//加载菜单
 	void setMenu(T_Menu* menu, int w, int h, wstring path, wstring item[]);			//菜单值的设定
-	void LoadSkill();						//加载技能
-	void LoadMusic();			//加载音乐
+	void LoadSkill();		//加载技能
+	void LoadMusic();		//加载音乐
 	void LoadExplosion(int x, int y);	//加载爆炸效果
-	void LoadBomb();		//加载子弹
+	void LoadBomb(int x, int y);		//加载子弹
 	void LoadImg();			//加载图片
 	void drawBlood(HDC hdc);		//画道具血量进度条
 	void drawMBlood(HDC hdc, int rx, int ry, MonsterSprite* npc);       //画怪物血量进度条
+	void loadTowerMenu(int x, int y);
+	void loadUpdateMenu(int x, int y);
 
 	//---------更新---------------------
 	void updatePlayerLife();	//更新萝卜生命
 	void updateAnimation();		//更新炮塔帧序列
 	void updateNPCPos();		//更新NPC位置         **
-	void updateBombPos();		//更新子弹位置
+	void updateBombPos(int dir);		//更新子弹位置
 	void updateLuo();			//更新萝卜状态
 	void updatePlayerLevel();	//更新炮塔等级
 	void updateNPCInfo();		//更新每一波怪物信息  **
