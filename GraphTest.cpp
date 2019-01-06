@@ -1,61 +1,29 @@
 #include "GraphTest.h"
-int GraphTest::FAN1[4] = { 7,8,9,10 };
-int GraphTest::FAN2[4] = { 14,15,16,17 };
-int GraphTest::FAN3[4] = { 21,22,23,24 };
-int GraphTest::FANB1[5] = { 28,29,30,31,32 };
-int GraphTest::FANB2[5] = { 35,36,37,38,39 };
-int GraphTest::FANB3[5] = { 42,43,44,45,46 };
-
-
-int GraphTest::B1[4] = { 7,8,9,10 };
-int GraphTest::B2[4] = { 14,15,16,17 };
-int GraphTest::B3[4] = { 21,22,23,24 };
-int GraphTest::BB1[5] = { 35,36,37,38,39 };
-int GraphTest::BB2[5] = { 42,43,44,45,46 };
-int GraphTest::BB3[5] = { 49,50,51,52,53 };
-
-int GraphTest::BS1[3] = { 7,8,9 };
-int GraphTest::BS2[3] = { 14,15,16 };
-int GraphTest::BS3[3] = { 21,22,23 };
-int GraphTest::BSB1[7] = { 35,36,37,38,39,40,41 };
-int GraphTest::BSB2[7] = { 42,43,44,45,46,47,48 };
-int GraphTest::BSB3[7] = { 49,50,51,52,53,54,55 };
-
-
-int GraphTest::S1[3] = { 7,8,9 };
-int GraphTest::S2[3] = { 14,15,16 };
-int GraphTest::S3[3] = { 21,22,23 };
-int GraphTest::SB1[3] = { 35,36,37 };
-int GraphTest::SB2[3] = { 42,43,44 };
-int GraphTest::SB3[3] = { 49,50,51 };
-
-
-int GraphTest::SN1[3] = { 7,8,9 };
-int GraphTest::SN2[3] = { 14,15,16 };
-int GraphTest::SN3[3] = { 21,22,23 };
-int GraphTest::SNB1[3] = { 35,36,37 };
-int GraphTest::SNB2[3] = { 42,43,44 };
-int GraphTest::SNB3[3] = { 49,50,51 };
-
-
-int GraphTest::SUN1[3] = { 7,8,9 };
-int GraphTest::SUN2[3] = { 14,15,16 };
-int GraphTest::SUN3[3] = { 21,22,23 };
-int GraphTest::SUNB1[3] = { 35,36,37 };
-int GraphTest::SUNB2[3] = { 42,43,44 };
-int GraphTest::SUNB3[3] = { 49,50,51 };
-LPCTSTR GraphTest::tower_files[6] = { L".\\res\\tower\\bottle.png",L".\\res\\tower\\sun.png",L".\\res\\tower\\bluestaratt.png",L".\\res\\tower\\fan.png", L".\\res\\tower\\shit.png",L".\\res\\tower\\snow.png" };
-
+TOWERS GraphTest::tInfo[6] = {
+	//炮塔图片  攻速  伤害值  攻击范围  攻击类型  买进价格  卖出价格  造成的减速量  图片缩放比率
+	{L"res\\tower\\bottle.png",{1.82,2.29,3.57},{10,12,13}, },
+	{},
+	{},
+	{},
+	{},
+	{}
+};
 MONSTER GraphTest::mInfo[8] = {
-	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向
-	{0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 30 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT },
-	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 28 ,0.6 ,TRANS_NONE, DIR_RIGHT }
+	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向 与地图碰撞距离
+	{0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 30 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 28 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
+};
+SPRITEINFO GraphTest::lInfo[4] = {
+{170, 133,DIR_DOWN,1,1,1,0,1,0,255,1,1},
+{ 240, 395,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
+{ 200, 420,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
+{ 495, 483,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
 };
 PROPERTY GraphTest::pInfo[10] = {
 	// 道具图片   道具生命值    道具奖励金   图片缩放比率
@@ -72,6 +40,9 @@ PROPERTY GraphTest::pInfo[10] = {
 };
 int GraphTest::Explosion_F[4] = {0,1,2,3};
 int GraphTest::Monster_M[6] = { 0,0,0,1,1,1 };
+int GraphTest::Monster_L[11] = { 0,0,0,0,1,1,1,1,1,1,1 };
+int GraphTest::luo_lF[100]{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8,9,10,11,12,13,13 };
+int GraphTest::luo_eF[9]{ 14,15,16,17,18,19,19,20,20 };
 GraphTest::GraphTest(HINSTANCE hInstance, LPCTSTR szWindowClass, LPCTSTR szTitle,
 	WORD Icon, WORD SmIcon, int iWidth, int iHeight) :T_Engine(hInstance,
 		szWindowClass, szTitle, Icon, SmIcon, iWidth, iHeight)
@@ -91,7 +62,6 @@ void GraphTest::GameInit()
 	LoadMusic();
 	loadMenu();
 	LoadImg();
-	
 }
 
 void GraphTest::GameLogic()
@@ -100,7 +70,6 @@ void GraphTest::GameLogic()
 	{
 		guans = guan;
 		LoadGuan(guan);
-		loadTowerMenu(50, 50);
 	}
 	if (GameState == GAME_RUN)
 	{
@@ -116,23 +85,12 @@ void GraphTest::GameLogic()
 			}
 		}
 		
-		if (run == 1)
-		{
-			/*player->SetPosition(mouse_pt.x, mouse_pt.y);
-			bomb->SetPosition(mouse_pt.x, mouse_pt.y);*/
-			updateBombPos(bomb->GetDir());
-			t_scence->ScrollScene(bomb);
-			bomb->LoopFrame();
-
-			t_scence->ScrollScene(player);
-			player->LoopFrame();
-		}
-		
 		LoadWaveNPC();
 		updateNPCPos();
 		updateNPCLife();
 		updateProLife();
 		updateAnimation();
+		updateLuo();
 	}
 }
 
@@ -210,12 +168,19 @@ void GraphTest::GamePaint(HDC hdc)
 			t_scence->Draw(hdc, 0, 0);
 			break;
 		}
+		if (lightflag)
+		{
+			if(frameCount%6<3)
+				light.PaintRegion(light.GetBmpHandle(), hdc, lInfo[guan - 1].X, lInfo[guan - 1].Y, 0, 0, 98, 92, 1, TRANS_NONE, 200);
+			else
+				light.PaintRegion(light.GetBmpHandle(), hdc, lInfo[guan - 1].X, lInfo[guan - 1].Y, 98, 0, 98, 92, 1, TRANS_NONE, 200);
+		}
+
 		countDown(hdc);
 		vMonsterSet::iterator p;
 		
 		for (p = npc_set.begin(); p != npc_set.end(); p++)
 		{
-			
 			if ((*p)->IsVisible() == true)
 			{
 				//(*p)->Draw(hdc);
@@ -223,6 +188,7 @@ void GraphTest::GamePaint(HDC hdc)
 			}
 				
 		}
+		
 
 		RectF infoRec;
 		infoRec.X = 540;
@@ -242,18 +208,10 @@ void GraphTest::GamePaint(HDC hdc)
 		infoRec.Height = 40;
 		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
 
-
+		luolife->PaintRegion(luolife->GetBmpHandle(), hdc, playLuo->GetX() + 70, playLuo->GetY() + 15, 0, (life - 1) * 37, 74, 36, 0.8);
 		run_speed.DrawMenu(hdc,0.8);
 		run_start.DrawMenu(hdc,0.8);
 		run_return.DrawMenu(hdc,0.8);
-
-		choosefan.DrawMenu(hdc,0.8);
-		choosebluestar.DrawMenu(hdc);
-		choosebottle.DrawMenu(hdc);
-		chooseshit.DrawMenu(hdc);
-		choosesnow.DrawMenu(hdc);
-		choosesun.DrawMenu(hdc);
-		chooselevel.DrawMenu(hdc);
 	}
 }
 
@@ -423,15 +381,6 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			run_return.MenuMouseMove(x, y);		//返回
 			run_speed.MenuMouseMove(x, y);		//切换速度
 			run_start.MenuMouseMove(x, y);		//开始暂停
-
-			choosefan.MenuMouseMove(x, y);
-			choosebluestar.MenuMouseMove(x, y);
-			choosebottle.MenuMouseMove(x, y);
-			chooseshit.MenuMouseMove(x, y);
-			choosesnow.MenuMouseMove(x, y);
-			choosesun.MenuMouseMove(x, y);
-
-			chooselevel.MenuMouseMove(x, y);
 		}
 		if (ActionType == MOUSE_LCLICK)
 		{
@@ -462,65 +411,6 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				setMenu(&run_start, 56, 56, L"res\\menu\\zan.png", setItems);
 				GameState = GAME_PAUSE;
 			}
-
-			int indexf = choosefan.MenuMouseClick(x, y);
-			/*int indexbs = choosebluestar.MenuMouseClick(x, y);
-			int indexb = choosebottle.MenuMouseClick(x, y);
-			int indexs = chooseshit.MenuMouseClick(x, y);
-			int indexsn = choosesnow.MenuMouseClick(x, y);
-			int indexsun = choosesun.MenuMouseClick(x, y);*/
-
-			int indexl = chooselevel.MenuMouseClick(x, y);
-			if (indexf == 0)
-			{
-				towerkind = 1;
-				towerflag = 1;
-			}
-			if (towerflag == 1)
-			{
-				player->SetPosition(x - 113, y - 113);
-				bomb->SetPosition(x - 113, y - 113);
-
-				player->SetVisible(true);
-				bomb->SetVisible(true);
-
-				run = 1;
-			}
-			/*if (indexbs == 0)
-			{
-			towerkind = 2;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexb == 0)
-			{
-			towerkind = 3;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexs == 0)
-			{
-			towerkind = 4;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexsn == 0)
-			{
-			towerkind = 5;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexsun == 0)
-			{
-			towerkind = 6;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}*/
 		}
 	}
 	else if (GameState == GAME_PAUSE)
@@ -625,85 +515,9 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				}
 
 			}
+
 		}
 	}
-}
-
-void GraphTest::loadTowerMenu(int x, int y) {
-
-	int btn_width = 0, btn_height = 0;
-	wstring setItems[] = { L" " };
-	MENUITEM mItem;
-
-	btn_width = 226;           //菜单项图片宽
-	btn_height = 226;         //菜单项图片高
-							  //游戏界面的返回
-	mItem.pos.x = 0;
-	mItem.pos.y = 0;
-	mItem.ItemName = setItems[0];
-	choosefan.AddMenuItem(mItem);
-
-	setMenu(&choosefan, btn_width, btn_height, L"res\\tower\\fan.png", setItems);
-
-	/*mItem.pos.x = 0;
-	mItem.pos.y = 70;
-	mItem.ItemName = setItems[0];
-	choosebluestar.AddMenuItem(mItem);
-
-	setMenu(&choosebluestar, btn_width, btn_height, L"res\\tower\\bluestaratt.png", setItems);
-
-	mItem.pos.x = 0;
-	mItem.pos.y = 100;
-	mItem.ItemName = setItems[0];
-	choosebottle.AddMenuItem(mItem);
-
-	setMenu(&choosebottle, btn_width, btn_height, L"res\\tower\\bottle.png", setItems);
-
-	mItem.pos.x = 0;
-	mItem.pos.y = 150;
-	mItem.ItemName = setItems[0];
-	chooseshit.AddMenuItem(mItem);
-
-	setMenu(&chooseshit, btn_width, btn_height, L"res\\tower\\shit.png", setItems);
-
-	mItem.pos.x = 0;
-	mItem.pos.y = 200;
-	mItem.ItemName = setItems[0];
-	choosesnow.AddMenuItem(mItem);
-
-	setMenu(&choosesnow, btn_width, btn_height, L"res\\tower\\snow.png", setItems);
-
-	mItem.pos.x = 0;
-	mItem.pos.y = 250;
-	mItem.ItemName = setItems[0];
-	choosesun.AddMenuItem(mItem);
-
-	setMenu(&choosesun, btn_width, btn_height, L"res\\tower\\sun.png", setItems);*/
-
-	bg_buffer.Play(true);
-	//GameState = GAME_RUN;
-}
-
-void GraphTest::loadUpdateMenu(int x, int y)
-{
-	int btn_width = 0, btn_height = 0;
-	wstring setItems[] = { L" " };
-	MENUITEM mItem;
-	//---游戏界面的返回-------------------------
-
-	btn_width = 76;           //菜单项图片宽
-	btn_height = 78;         //菜单项图片高
-							 //游戏界面的返回
-	mItem.pos.x = x;
-	mItem.pos.y = y;
-	mItem.ItemName = setItems[0];
-
-	chooselevel.AddMenuItem(mItem);
-
-	setMenu(&chooselevel, btn_width, btn_height, L"res\\up.png", setItems);
-
-	bg_buffer.Play(true);
-	//GameState = GAME_RUN;
 }
 //加载菜单
 void GraphTest::loadMenu()
@@ -903,8 +717,13 @@ void GraphTest::LoadWaveNPC()
 	levelNPCNum = waveNum[guan-1] * monster;
 	for (int i = 0; i < levelNPCNum; i++)
 	{
+		if (frameCount >= NPCFrame[i].frame - 10 && frameCount < NPCFrame[i].frame)
+		{
+			lightflag = true;
+		}
 		if (frameCount == NPCFrame[i].frame)
 		{
+			lightflag = false;
 			//new 怪物对象,然后加入npcset
 			int number = NPCFrame[i].minfo - 1;
 			MonsterSprite* tempSprite = new MonsterSprite(mInfo[number].imgName,140,121);
@@ -929,6 +748,7 @@ void GraphTest::LoadWaveNPC()
 			spInfo.Visible = true;
 			//spInfo.Active = true;
 			//spInfo.Dead = false;
+			spInfo.instance = mInfo[number].instance;
 			spInfo.ratio = mInfo[number].ratio;
 			tempSprite->Initiate(spInfo);
 			tempSprite->SetLayerTypeID(LAYER_NPC);
@@ -943,7 +763,7 @@ void GraphTest::LoadWaveNPC()
 		}
 	}
 }
-//加载地图
+
 void GraphTest::LoadMap(char* path)
 {
 	t_scence->LoadTxtMap(path);
@@ -961,53 +781,42 @@ void GraphTest::LoadMap(char* path)
 		if (p->layer->ClassName() == "T_Map") p->layer->SetPosition(scn_x, scn_y);
 	}
 }
-//加载炮塔
-void GraphTest::LoadPlayer(int x, int y)
+
+void GraphTest::LoadPlayer()
+{
+}
+
+void GraphTest::LoadLuo(int x,int y)
 {
 	GAMELAYER gameLayer;
-	SPRITEINFO spInfo;
-	//加载玩家角色
-	/*if(towerkind==1)*/ player = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
-	/*if (towerkind == 2) player = new T_Sprite(L".\\res\\tower\\bluestaratt.png", 226, 226);
-	if (towerkind == 3) player = new T_Sprite(L".\\res\\tower\\bottle.png", 226, 226);
-	if (towerkind == 4) player = new T_Sprite(L".\\res\\tower\\shit.png", 226, 226);
-	if (towerkind == 5) player = new T_Sprite(L".\\res\\tower\\snow.png", 226, 226);
-	if (towerkind == 6) player = new T_Sprite(L".\\res\\tower\\sun.png", 226, 226);*/
-	spInfo.Active = true;
-	spInfo.Dead = false;
-	spInfo.Dir = DIR_UP;
-	spInfo.Rotation = TRANS_NONE;
-	spInfo.Ratio = 0.9f;
-	spInfo.Level = 0;
-	spInfo.Score = 0;
-	spInfo.Speed = 0;
-	spInfo.Alpha = 220;
-	spInfo.X = x;
-	spInfo.Y = y;
-	spInfo.Visible = false;
-	player->Initiate(spInfo);
+	SPRITEINFO pro_Info;
+	pro_Info.X = x;
+	pro_Info.Y = y;
+	pro_Info.Dead = false;
+	pro_Info.Rotation = TRANS_NONE;
+	pro_Info.Ratio = 0.6f;
+	pro_Info.Alpha = 255;
+	pro_Info.Visible = true;
+	pro_Info.Score = 10;
+	pro_Info.Dir = DIR_LEFT;
+	pro_Info.Speed = 0;
+	pro_Info.Active = true;
+	pro_Info.Level = 1;
+	int sp_width = 118;
+	int sp_height = 112;
+	playLuo = new T_Sprite(L"res\\luobo.png", sp_width, sp_height);
+	playLuo->Initiate(pro_Info);
+	playLuo->SetLayerTypeID(LAYER_NPC);
+	playLuo->SetSequence(luo_lF, 100);
 
-	/*if (towerkind == 1)*/ player->SetSequence(FAN1, 4);
-	/*if (towerkind == 2) player->SetSequence(BS1, 3);
-	if (towerkind == 3) player->SetSequence(B1, 4);
-	if (towerkind == 4) player->SetSequence(S1, 3);
-	if (towerkind == 5) player->SetSequence(SN1, 3);
-	if (towerkind == 6)player->SetSequence(SUN1, 3);*/
-
-
-	player->SetLayerTypeID(LAYER_NPC);
-	gameLayer.layer = player;
+	gameLayer.layer = playLuo;
 	gameLayer.type_id = LAYER_NPC;
 	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
 	gameLayer.layer->setZorder(gameLayer.z_order);
 	t_scence->Append(gameLayer);
+
 }
-//加载萝卜
-void GraphTest::LoadLuo(int x,int y)
-{
-	
-}
-//加载道具
+
 void GraphTest::LoadProp(int t,int x,int y)
 {
 	GAMELAYER gameLayer;
@@ -1028,6 +837,7 @@ void GraphTest::LoadProp(int t,int x,int y)
 	S_property *sp = proper_set.back();
 	sp->Initiate(pro_Info, p_info);
 	sp->SetLayerTypeID(LAYER_NPC);
+
 	gameLayer.layer = sp;
 	gameLayer.type_id = LAYER_NPC;
 	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
@@ -1095,74 +905,8 @@ void GraphTest::LoadExplosion(int x,int y)
 	sp = NULL;
 }
 
-void GraphTest::LoadBomb(int x, int y)
+void GraphTest::LoadBomb()
 {
-	GAMELAYER gameLayer;
-	SPRITEINFO spInfo;
-
-	/*if (towerkind == 1) */bomb = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
-	/*if (towerkind == 2) bomb = new T_Sprite(L".\\res\\tower\\bluestaratt.png", 226, 226);
-	if (towerkind == 3) bomb = new T_Sprite(L".\\res\\tower\\bottle.png", 226, 226);
-	if (towerkind == 4) bomb = new T_Sprite(L".\\res\\tower\\shit.png", 226, 226);
-	if (towerkind == 5) bomb = new T_Sprite(L".\\res\\tower\\snow.png", 226, 226);
-	if (towerkind == 6) bomb = new T_Sprite(L".\\res\\tower\\sun.png", 226, 226);*/
-
-	spInfo.Active = true;
-	spInfo.Dead = false;
-	spInfo.Dir = DIR_DOWN;
-	spInfo.Rotation = TRANS_NONE;
-	spInfo.Ratio = 1.0f;
-	spInfo.Level = 0;
-	spInfo.Score = 0;
-	spInfo.Speed = 5;
-	spInfo.Alpha = 220;
-	spInfo.Visible = false;
-	spInfo.X = x;
-	spInfo.Y = y;
-	bomb->Initiate(spInfo);
-	switch (spInfo.Dir)
-	{
-		/*case DIR_LEFT:
-		if (towerkind == 1) bomb->SetSequence(FANB1, 5);
-		if (towerkind == 2) bomb->SetSequence(BSB1, 7);
-		if (towerkind == 3) bomb->SetSequence(BB1, 5);
-		if (towerkind == 4) bomb->SetSequence(SB1, 3);
-		if (towerkind == 5) bomb->SetSequence(SNB1, 3);
-		if (towerkind == 6)bomb->SetSequence(SUNB1, 3);
-
-		break;
-		case DIR_RIGHT:
-		if (towerkind == 1) bomb->SetSequence(FANB1, 5);
-		if (towerkind == 2) bomb->SetSequence(BSB1, 7);
-		if (towerkind == 3) bomb->SetSequence(BB1, 5);
-		if (towerkind == 4) bomb->SetSequence(SB1, 3);
-		if (towerkind == 5) bomb->SetSequence(SNB1, 3);
-		if (towerkind == 6)bomb->SetSequence(SUNB1, 3);
-		break;
-		case DIR_UP:
-		if (towerkind == 1) bomb->SetSequence(FANB1, 5);
-		if (towerkind == 2) bomb->SetSequence(BSB1, 7);
-		if (towerkind == 3) bomb->SetSequence(BB1, 5);
-		if (towerkind == 4) bomb->SetSequence(SB1, 3);
-		if (towerkind == 5) bomb->SetSequence(SNB1, 3);
-		if (towerkind == 6)bomb->SetSequence(SUNB1, 3);
-		break;*/
-	case DIR_DOWN:
-		/*if (towerkind == 1)*/ bomb->SetSequence(FANB1, 5);
-		/*if (towerkind == 2) bomb->SetSequence(BSB1, 7);
-		if (towerkind == 3) bomb->SetSequence(BB1, 5);
-		if (towerkind == 4) bomb->SetSequence(SB1, 3);
-		if (towerkind == 5) bomb->SetSequence(SNB1, 3);
-		if (towerkind == 6)bomb->SetSequence(SUNB1, 3);*/
-		break;
-	}
-
-	bomb->SetLayerTypeID(LAYER_NPC);
-	gameLayer.layer = bomb;
-	gameLayer.type_id = LAYER_NPC;
-	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
-	gameLayer.layer->setZorder(gameLayer.z_order);
-	t_scence->Append(gameLayer);
 }
 //加载图片
 void GraphTest::LoadImg()
@@ -1175,6 +919,8 @@ void GraphTest::LoadImg()
 	time4 = new T_Graph(L"res\\tool\\go.png");
 	start = new T_Graph(L"res\\menu\\start.png");
 	pause = new T_Graph(L"res\\menu\\zan.png");
+	light.LoadImageFile(L"res\\monster\\light.png");
+	luolife = new T_Graph(L"res\\tool\\life.png");
 }
 
 void GraphTest::drawBlood(HDC hdc)
@@ -1253,6 +999,13 @@ void GraphTest::updateAnimation()
 		(*p1)->LoopFrame();
 
 	}
+	vSpriteSet::iterator p2;
+	for (p2 = light_set.begin(); p2 != light_set.end(); p2++)
+	{
+		(*p2)->LoopFrameOnce();
+
+	}
+	playLuo->LoopFrame();
 }
 //更新NPC位置
 void GraphTest::updateNPCPos()
@@ -1262,13 +1015,16 @@ void GraphTest::updateNPCPos()
 		int dir = npc_set.at(i)->GetDir();
 		int xspeed = 0;
 		int yspeed = 0;
-		if (npc_set.at(i)->CollideWith(t_scence->getBarrier()))
+		if (npc_set.at(i)->CollideWith(t_scence->getBarrier(), npc_set.at(i)->getBarStance()))
 		{
-			monsterToBar++;
-			dir = monsterDir[monsterBegin + monsterToBar];
+			
+			npc_set.at(i)->setMonsterToBar();
+			int t = npc_set.at(i)->getMonsterToBar();
+			dir = monsterDir[monsterBegin + t];
+			npc_set.at(i)->SetDir(dir);
 		}
-		/*if (dir == DIR_LEFT) npc_set.at(i)->SetRatio(TRANS_HFLIP_NOROT);
-		else npc_set.at(i)->SetRatio(TRANS_NONE);*/
+		if (dir == DIR_LEFT) npc_set.at(i)->SetRotation(TRANS_HFLIP_NOROT);
+		else npc_set.at(i)->SetRotation(TRANS_NONE);
 		if (dir == DIR_LEFT)
 		{
 			xspeed = -npc_set.at(i)->GetSpeed() * speedf;
@@ -1290,60 +1046,28 @@ void GraphTest::updateNPCPos()
 	
 }
 
-void GraphTest::updateBombPos(int dir)
+void GraphTest::updateBombPos()
 {
-	if (bomb == NULL) return;
-	int nextStepX, nextStepY;
-	int SpeedX = 0, SpeedY = 0;
-	if (bomb->IsDead() == false && bomb->IsVisible() == true && bomb->IsActive() == true)
-	{
-		switch (dir)
-		{
-		case DIR_LEFT:
-			SpeedX = -bomb->GetSpeed();
-			SpeedY = 0;
-
-			nextStepX = bomb->GetX() - bomb->GetSpeed();
-
-			break;
-		case DIR_RIGHT:
-			SpeedX = bomb->GetSpeed();
-			SpeedY = 0;
-
-			nextStepX = bomb->GetX() + bomb->GetRatioSize().cx + bomb->GetSpeed();
-
-			break;
-		case DIR_UP:
-			SpeedX = 0;
-			SpeedY = -bomb->GetSpeed();
-
-			nextStepY = bomb->GetY() - bomb->GetSpeed();
-
-			break;
-		case DIR_DOWN:
-			SpeedX = 0;
-			SpeedY = bomb->GetSpeed();
-
-			nextStepY = bomb->GetY() + bomb->GetRatioSize().cy + bomb->GetSpeed();
-
-			break;
-		}
-		int x = bomb->GetX();
-		int y = bomb->GetY();
-		bomb->Move(SpeedX, SpeedY);
-
-	}
-
 }
 
 void GraphTest::updateLuo()
 {
-
+	life = playLuo->GetScore();
+	if (life < 10 && life > 0 && playLuo->IsActive() == false)
+	{
+		playLuo->SetSequence(&luo_eF[10 - life - 1], 1);
+		playLuo->SetActive(true);
+	}
+	if (life == 0 && playLuo->IsVisible() == true)
+	{
+		playLuo->SetVisible(false);
+	}
 }
+
 void GraphTest::updatePlayerLevel()
 {
 }
-//更新怪物信息
+
 void GraphTest::updateNPCInfo()
 {
 	int waveLength = MaxFrameCount / waveNum[guan-1];	//波数之间的间隔
@@ -1351,6 +1075,7 @@ void GraphTest::updateNPCInfo()
 	for (int i = 0; i < waveNum[guan-1]; i++)//波数
 	{
 		int m = rand() % 7 + 2;
+		//int m = 7;
 		for (int j = 0; j < monster; j++)//
 		{
 			NPCFrame[5*i+j].frame = i*waveLength+j*monsterLength;
@@ -1368,7 +1093,7 @@ void GraphTest::updateNPCInfo()
 		NPCFrame[0].frame = 1;
 	}	
 }
-//更新怪物生命
+
 void GraphTest::updateNPCLife()
 {
 	vMonsterSet::iterator p;
@@ -1381,13 +1106,13 @@ void GraphTest::updateNPCLife()
 			{
 				(*p)->SetVisible(false);
 				LoadExplosion((*p)->GetX(), (*p)->GetY());
-				//price = price + (*p)->GetScore();
+				price = price + (*p)->GetScore();
 
 			}
 		}
 	}
 }
-//更新道具生命
+
 void GraphTest::updateProLife()
 {
 	sPropertySet::iterator p;
@@ -1400,16 +1125,16 @@ void GraphTest::updateProLife()
 			{
 				(*p)->SetVisible(false);
 				LoadExplosion((*p)->GetX(), (*p)->GetY());
-				//price = price + (*p)->GetScore();
+				price = price + (*p)->GetScore();
 				
 			}
 		}
 	}
 }
-//加载关卡
+
 void GraphTest::LoadGuan(int g)
 {
-	monsterToBar = 0;
+	//monsterToBar = 0;
 	t_scence = NULL;
 	proper_set.clear();
 	t_scence = new T_Scene();
@@ -1418,6 +1143,7 @@ void GraphTest::LoadGuan(int g)
 	frameTime = 0;
 	npc_set.clear();
 	updateNPCInfo();
+	
 	switch (g)
 	{
 		case 1:
@@ -1506,10 +1232,9 @@ void GraphTest::LoadGuan(int g)
 			break;
 		}
 	}
-	LoadPlayer(0, 0);
-	LoadBomb(0, 0);
+	LoadLuo(endX[g - 1], endY[g - 1]);
 }
-//倒计时
+
 void GraphTest::countDown(HDC hdc)
 {
 	if (frameTime <= 80)
