@@ -48,14 +48,14 @@ LPCTSTR GraphTest::tower_files[6] = { L".\\res\\tower\\bottle.png",L".\\res\\tow
 
 MONSTER GraphTest::mInfo[8] = {
 	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向 与地图碰撞距离
-	{ 0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 30 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 268 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
 	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
 	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 28 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
-	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 28 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
-	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 28 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
+	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 14 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
 };
 SPRITEINFO GraphTest::lInfo[4] = {
 	{ 170, 133,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
@@ -79,8 +79,8 @@ PROPERTY GraphTest::pInfo[10] = {
 int GraphTest::Explosion_F[4] = {0,1,2,3};
 int GraphTest::Monster_M[6] = { 0,0,0,1,1,1 };
 int GraphTest::Monster_L[11] = { 0,0,0,0,1,1,1,1,1,1,1 };
-int GraphTest::luo_lF[100]{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,1,1,1,2,2,2,3,3,3,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8,9,10,11,12,13,13 };
-int GraphTest::luo_eF[9]{ 14,15,16,17,18,19,19,20,20 };
+int GraphTest::luo_lF[100]{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,0,0,0,0,0,0,1,1,1,2,2,2,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8,9,10,11,12,13,13 };
+int GraphTest::luo_eF[9]{ 14,14,15,15,16,17,18,19,20 };
 GraphTest::GraphTest(HINSTANCE hInstance, LPCTSTR szWindowClass, LPCTSTR szTitle,
 	WORD Icon, WORD SmIcon, int iWidth, int iHeight) :T_Engine(hInstance,
 		szWindowClass, szTitle, Icon, SmIcon, iWidth, iHeight)
@@ -139,10 +139,9 @@ void GraphTest::GameLogic()
 		
 		LoadWaveNPC();
 		updateNPCPos();
-		updateNPCLife();
-		updateProLife();
 		updateAnimation();
 		updateLuo();
+		winState();
 	}
 }
 
@@ -173,12 +172,18 @@ void GraphTest::GamePaint(HDC hdc)
 
 		RectF infoRec;
 		infoRec.X = 0.00;
-		infoRec.Y = 180.00;
+		infoRec.Y = 145.00;
 		infoRec.Width = (float)wnd_width;
-		infoRec.Height = (float)wnd_height/2-30 ;
+		infoRec.Height = (float)wnd_height/2+30 ;
 
-		LPCTSTR info = L" 组号:6\n\n 8000116024  白星宇\n\n8000116120  王一清\n\n8000116127  张 涵";
-		T_Graph::PaintText(hdc, infoRec, info, 25, L"华康少女文字W5", Color(255, 252, 231), FontStyleBold, StringAlignmentCenter);
+		LPCTSTR info = L" 保卫萝卜 1.0\n\n组号:6\n\n          8000116127  张 涵 软工164\n\n\n\n         8000116120  王一清 软工164\n\n\n\n         8000116024  白星宇 软工161";
+		T_Graph::PaintText(hdc, infoRec, info, 20, L"华康少女文字W5", Color(255, 252, 231), FontStyleBold, StringAlignmentCenter);
+		int pp = 350;
+		int yy = 225;
+		zhang->PaintImage(hdc, pp, yy, 64, 85, 255);
+		wang->PaintImage(hdc, pp, yy+100, 64, 85,255);
+		bai->PaintImage(hdc, pp, yy +200, 64, 85,255);
+	
 	}
 	else if (GameState == GAME_SETTING)
 	{
@@ -204,22 +209,7 @@ void GraphTest::GamePaint(HDC hdc)
 	}
 	else if (GameState == GAME_RUN)
 	{
-		switch (guan)
-		{
-		case 1:
-			t_scence->Draw(hdc, 0, 0);
-			drawBlood(hdc);
-			break;
-		case 2:
-			t_scence->Draw(hdc, 0, 0);
-			break;
-		case 3:
-			t_scence->Draw(hdc, 0, 0);
-			break;
-		case 4:
-			t_scence->Draw(hdc, 0, 0);
-			break;
-		}
+		t_scence->Draw(hdc, 0, 0);
 		if (lightflag)
 		{
 			if (frameCount % 6<3)
@@ -271,6 +261,54 @@ void GraphTest::GamePaint(HDC hdc)
 		choosesnow.DrawMenu(hdc);
 		choosesun.DrawMenu(hdc);
 		chooselevel.DrawMenu(hdc);
+		if (frameTime == 81)
+			updateProLife(hdc);
+		updateNPCLife(hdc);
+		//GameState = GAME_WIN;
+	}
+	else if (GameState == GAME_PAUSE)
+	{
+		pause->PaintRegion(pause->GetBmpHandle(),hdc, 850, 10,0,0, pause->GetImageWidth(), pause->GetImageHeight()/2,0.8,0,200);
+	}
+	else if (GameState == GAME_WIN)
+	{
+		p_winmenu->DrawTMenu(hdc,0.95);
+		if (luoType == -1)     //铜萝卜
+			tong->PaintImage(hdc, 505, 40,118,160, 250);
+		if (luoType == 0)   //银萝卜
+			yin->PaintImage(hdc, 505, 40, 118, 160, 250);
+		if (luoType == 1)   //金萝卜
+			jin->PaintImage(hdc, 505, 40, 118, 160, 250);
+		RectF infoRec;
+		infoRec.X = 435;
+		infoRec.Y = 225;
+		infoRec.Width = 250;
+		infoRec.Height = 40;
+		LPCTSTR info = L"你获得的宝石数 ";
+		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		infoRec.X += 120;
+		info = T_Util::int_to_wstring(price / 1000);
+		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+	}
+	else if (GameState == GAME_OVER)
+	{
+		p_overmenu->DrawTMenu(hdc, 0.95);
+		RectF infoRec;
+		infoRec.X = 610;
+		infoRec.Y = 220;
+		infoRec.Width = 40;
+		infoRec.Height = 40;
+		LPCTSTR info = T_Util::int_to_wstring(waveNum[guan - 1]);
+		T_Graph::PaintText(hdc, infoRec, info, 22, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		info = T_Util::int_to_wstring(frameCount / (MaxFrameCount / waveNum[guan - 1]) + 1);
+		infoRec.X = 540;
+		T_Graph::PaintText(hdc, infoRec, info, 22, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		infoRec.X = 300;
+		infoRec.Y = 350;
+		infoRec.Width = 550;
+		infoRec.Height = 100;
+		info = L"危机时使用魔法技能可以给怪物致命一击！";
+		T_Graph::PaintText(hdc, infoRec, info, 17, L"华康少女文字W5", Color(10,127,207), FontStyleBold, StringAlignmentCenter);
 	}
 }
 
@@ -332,6 +370,7 @@ void GraphTest::GameKeyAction(int ActionType)
 		
 		
 	}
+	
 }
 
 void GraphTest::GameMouseAction(int x, int y, int ActionType)
@@ -424,7 +463,6 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				{
 				case 0:
 					GameState = GAME_START;
-					
 					break;
 				case 1:
 					SendMessage(m_hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
@@ -644,6 +682,48 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			}
 		}
 	}
+	else if (GameState == GAME_WIN)
+	{
+		if (ActionType == MOUSE_MOVE)
+		{
+			p_overmenu->MenuMouseMove(x, y);		//开始暂停
+		}
+		if (ActionType == MOUSE_LCLICK)
+		{
+			int index;
+			index = p_overmenu->MenuMouseClick(x, y);
+			switch (index)
+			{
+			case 0:
+				GameState = GAME_SCREEN;
+				break;
+			case 1:
+				GameState = GAME_RUN;
+				guan = guan + 1;
+				break;
+			}
+		}
+	}
+	else if (GameState == GAME_OVER)
+	{
+		if (ActionType == MOUSE_MOVE)
+		{
+			p_winmenu->MenuMouseMove(x, y);		//开始暂停
+		}
+		if (ActionType == MOUSE_LCLICK)
+		{
+			int index = p_winmenu->MenuMouseClick(x, y);
+			switch (index)
+			{
+			case 0:
+				GameState = GAME_SCREEN;
+				break;
+			case 1:
+				GameState = GAME_RUN;
+				break;
+			}
+		}
+	}
 }
 
 void GraphTest::loadTowerMenu(int x, int y) {
@@ -725,6 +805,8 @@ void GraphTest::loadUpdateMenu(int x, int y)
 //加载菜单
 void GraphTest::loadMenu()
 {
+	//GameState = GAME_WIN;
+	GameState = GAME_START;
 	int x = 0, y = 0;
 	int btn_width = 0, btn_height = 0;     //主菜单和关于界面的菜单
 	p_menu = &t_menu;
@@ -732,14 +814,19 @@ void GraphTest::loadMenu()
 	p_screenmenu = &screen_menu;
 	p_setBack_menu = &setBack_menu;
 	p_start_menu = &start_menu;
-	p_menu->SetMenuBkg(L"res\\menu\\menu.png");
-	p_aboutmenu->SetMenuBkg(L"res\\menu\\about_bak.png");
-	p_screenmenu->SetMenuBkg(L"res\\menu\\guanc.png");
-	p_setBack_menu->SetMenuBkg(L"res\\menu\\about_bak.png");
+	p_winmenu = &win_menu;
+	p_overmenu = &over_menu;
+	p_menu->SetMenuBkg(L"res\\menu\\menu.png");						//主页面
+	p_aboutmenu->SetMenuBkg(L"res\\menu\\about_bak.png");			//关于页面
+	p_screenmenu->SetMenuBkg(L"res\\menu\\guanc.png");				//选关页面
+	p_setBack_menu->SetMenuBkg(L"res\\menu\\about_bak.png");		//设置页面
+	p_winmenu->SetMenuBkg(L"res\\menu\\win.jpg");				//游戏win页面*
+	p_overmenu->SetMenuBkg(L"res\\menu\\over.jpg");			//游戏失败页面
 
 	wstring menuItems[] = { L"新游戏",L"退出游戏" };
 	wstring aboutMenuItems[] = { L"返回",L"退出游戏" };
 	wstring setItems[] = { L" " };
+	wstring setItem[] = { L" ",L"" };
 	wstring chooseItems[] = { L"1 ",L"2",L"3",L"4",L"5",L"6",L"7",L"8",L"9" };
 	wstring setmItems[] = { L"返回" };
 	MENUITEM mItem;
@@ -763,13 +850,15 @@ void GraphTest::loadMenu()
 		x = i*(btn_width + MENU_SPACE) + (wnd_width - 2 * btn_width - MENU_SPACE) / 2;
 		y = wnd_height - 2 * btn_height + 100;
 		mItem.pos.x = x;
-		mItem.pos.y = y;
+		mItem.pos.y = y + 20;
 		mItem.ItemName = aboutMenuItems[i];
 		p_aboutmenu->AddMenuItem(mItem);
 	}
 	setMenu(p_menu, btn_width, btn_height, L"res\\menu\\menu_b1.png", menuItems);
 	//-----关于界面的菜单--------------------------
-	setMenu(p_aboutmenu, btn_width, btn_height, L"res\\menu\\menu_b1.png", aboutMenuItems);
+	btn_width = 236;           //菜单项图片宽
+	btn_height = 72;         //菜单项图片高
+	setMenu(p_aboutmenu, btn_width, btn_height, L"res\\menu\\button.png", aboutMenuItems);
 	//-----设置界面的菜单--------------------------
 	//返回按键
 	btn_width = 236;           //菜单项图片宽
@@ -864,9 +953,27 @@ void GraphTest::loadMenu()
 	mItem.ItemName = setItems[0];
 	run_speed.AddMenuItem(mItem);
 	setMenu(&run_speed, btn_width, btn_height, L"res\\menu\\speed1.png", setItems);
+	//-------------成功失败页面-------
+	//成功
+	for (int i = 0; i < 2; i++)
+	{
+		x = 305 + i * 300;
+		y = 500;
+		mItem.pos.x = x;      //当前菜单项x坐标
+		mItem.pos.y = y;       //当前菜单项y坐标
+		mItem.ItemName = setItem[i];          //当前菜单项文字
+		p_winmenu->AddMenuItem(mItem);
+		p_overmenu->AddMenuItem(mItem);
+	}
+	btn_width = 236;           //菜单项图片宽
+	btn_height = 72;         //菜单项图片高
+	setMenuT(p_winmenu, btn_width, btn_height, L"res\\menu\\0.png", L"res\\menu\\1.png", setItem);
+	//失败
+	setMenuT(p_overmenu, btn_width, btn_height, L"res\\menu\\0.png", L"res\\menu\\2.png", setItem);
 
 	bg_buffer.Play(true);
-	GameState = GAME_START;
+	
+	
 }
 //停止点击的音乐
 void GraphTest::stopClickMusic(AudioDXBuffer button_click_buffer, AudioDXBuffer button_move_buffer)
@@ -913,6 +1020,25 @@ void GraphTest::setMenu(T_Menu* menu,int w,int h,wstring path,wstring item[])
 	menu->SetClickSound(&button_click_buffer);
 	menu->SetMoveSound(&button_move_buffer);
 }
+void GraphTest::setMenuT(MyMenu * menu, int w, int h, wstring path, wstring path1, wstring item[])
+{
+	Color normalClr(193, 92, 0);
+	Color focusClr(213, 104, 0);
+	menu->SetBtnBmpT(path,path1, w, h);
+	MENU_INFO menuInfo;
+	menuInfo.align = 1;							//对齐方式
+	menuInfo.space = MENU_SPACE;                //菜单项之间的间隔距离
+	menuInfo.width = w;                 //菜单项宽
+	menuInfo.height = h;               //菜单项高
+	menuInfo.fontName = L"华康少女文字W5";
+	menuInfo.isBold = true;
+	menuInfo.normalTextColor = normalClr;
+	menuInfo.focusTextColor = focusClr;
+	menu->SetMenuInfo(menuInfo);
+
+	menu->SetClickSound(&button_click_buffer);
+	menu->SetMoveSound(&button_move_buffer);
+}
 //加载每一波的怪物
 void GraphTest::LoadWaveNPC()
 {
@@ -947,7 +1073,7 @@ void GraphTest::LoadWaveNPC()
 			spInfo.speedl = mInfo[number].speedl;
 			spInfo.life = mInfo[number].life;
 			//spInfo.level = 0;
-			spInfo.score = 0;
+			spInfo.score = mInfo[number].score ;
 			spInfo.Visible = true;
 			//spInfo.Active = true;
 			//spInfo.Dead = false;
@@ -1225,22 +1351,38 @@ void GraphTest::LoadImg()
 	pause = new T_Graph(L"res\\menu\\zan.png");
 	light.LoadImageFile(L"res\\monster\\light.png");
 	luolife = new T_Graph(L"res\\tool\\life.png");
+	money[0] = new T_Graph(L"res\\price\\14.png");
+	money[1] = new T_Graph(L"res\\price\\50.png");
+	money[2] = new T_Graph(L"res\\price\\75.png");
+	money[3] = new T_Graph(L"res\\price\\85.png");
+	money[4] = new T_Graph(L"res\\price\\150.png");
+	money[5] = new T_Graph(L"res\\price\\168.png");
+	money[6] = new T_Graph(L"res\\price\\268.png");
+	money[7] = new T_Graph(L"res\\price\\999.png");
+	money[8] = new T_Graph(L"res\\price\\1000.png");
+	money[9] = new T_Graph(L"res\\price\\1500.png");
+	money[10] = new T_Graph(L"res\\price\\2500.png");
+	jin = new T_Graph(L"res\\menu\\jin.png");
+	yin = new T_Graph(L"res\\menu\\yin.png");
+	tong = new T_Graph(L"res\\menu\\tong.png");
+	wang = new T_Graph(L"res\\photo\\wyq.jpg");
+	zhang = new T_Graph(L"res\\photo\\zh.jpg");
+	bai = new T_Graph(L"res\\photo\\bai.jpg");
 }
 
-void GraphTest::drawBlood(HDC hdc)
+void GraphTest::drawBlood(HDC hdc,int i)
 {
-	for (int i = 0; i < pnum; i++)
+	int x = px[i] + 8;
+	int y = py[i] + 1;
+	int total = proper_set.at(i)->getBlood();
+	int hurt = proper_set.at(i)->getBloodh();
+	if (hurt >= total)
 	{
-		int x = px[i] + 8;
-		int y = py[i] + 1;
-		int total = proper_set.at(i)->getBlood();
-		int hurt = proper_set.at(i)->getBloodh();
-		if (hurt >= total)
-		{
-			proper_set.at(i)->SetDead(true);
-			continue;
-		}
-		blood1->PaintImage(hdc,x, y, blood1->GetImageWidth(), blood1->GetImageHeight(), 255);
+		proper_set.at(i)->SetDead(true);
+	}
+	else 
+	{
+		blood1->PaintImage(hdc, x, y, blood1->GetImageWidth(), blood1->GetImageHeight(), 255);
 		x = x + 2 + blood0->GetImageWidth()* (total - hurt) / total;
 		y = y + 2;
 		int sx = blood0->GetImageWidth()* (total - hurt) / total;
@@ -1268,6 +1410,47 @@ void GraphTest::drawMBlood(HDC hdc,int rx,int ry,MonsterSprite* npc)
 		int rw = blood0->GetImageWidth() * hurt / total + 1;
 		blood0->PaintRegion(blood0->GetBmpHandle(), hdc, x, y, sx, 0, rw, blood0->GetImageHeight(), 1);
 	
+}
+
+void GraphTest::drawPrice(HDC hdc, int m,int x,int y)
+{
+	switch (m)
+	{
+	case 14:
+		money[0]->PaintImage(hdc, x, y, money[0]->GetImageWidth(), money[0]->GetImageHeight(),255);
+		
+		break;
+	case 50:
+		money[1]->PaintImage(hdc, x, y);
+		break;
+	case 75:
+		money[2]->PaintImage(hdc, x, y, money[2]->GetImageWidth(), money[2]->GetImageHeight(), 255);
+		break;
+	case 85:
+		money[3]->PaintImage(hdc, x, y);
+		break;
+	case 150:
+		money[4]->PaintImage(hdc, x, y, money[4]->GetImageWidth(), money[4]->GetImageHeight(), 255);
+		break;
+	case 168:
+		money[5]->PaintImage(hdc, x, y, money[5]->GetImageWidth(), money[5]->GetImageHeight(), 255);
+		break;
+	case 268:
+		money[6]->PaintImage(hdc, x, y, money[6]->GetImageWidth(), money[6]->GetImageHeight(), 255);
+		break;
+	case 999:
+		money[7]->PaintImage(hdc, x, y);
+		break;
+	case 1000:
+		money[8]->PaintImage(hdc, x, y, money[8]->GetImageWidth(), money[8]->GetImageHeight(), 255);
+		break;
+	case 1500:
+		money[9]->PaintImage(hdc, x, y, money[9]->GetImageWidth(), money[9]->GetImageHeight(), 255);
+		break;
+	case 2500:
+		money[10]->PaintImage(hdc, x, y, money[10]->GetImageWidth(), money[10]->GetImageHeight(), 255);
+		break;
+	}
 }
 
 void GraphTest::updatePlayerLife()
@@ -1319,7 +1502,7 @@ void GraphTest::updateNPCPos()
 		int dir = npc_set.at(i)->GetDir();
 		int xspeed = 0;
 		int yspeed = 0;
-		if (npc_set.at(i)->CollideWith(t_scence->getBarrier(), npc_set.at(i)->getBarStance()))
+		if (npc_set.at(i)->CollideWithMap(t_scence->getBarrier(), npc_set.at(i)->getBarStance()))
 		{
 
 			npc_set.at(i)->setMonsterToBar();
@@ -1395,10 +1578,10 @@ void GraphTest::updateBombPos(int dir)
 	}
 
 }
-
+//更新萝卜生命状态
 void GraphTest::updateLuo()
 {
-	life = playLuo->GetScore();
+	//life = playLuo->GetScore();
 	if (life < 10 && life > 0 && playLuo->IsActive() == false)
 	{
 		playLuo->SetSequence(&luo_eF[10 - life - 1], 1);
@@ -1407,6 +1590,8 @@ void GraphTest::updateLuo()
 	if (life == 0 && playLuo->IsVisible() == true)
 	{
 		playLuo->SetVisible(false);
+		GameState = GAME_OVER;
+		//GameState = GAME_WIN;
 	}
 }
 void GraphTest::updatePlayerLevel()
@@ -1438,14 +1623,27 @@ void GraphTest::updateNPCInfo()
 	}	
 }
 //更新怪物生命
-void GraphTest::updateNPCLife()
+void GraphTest::updateNPCLife(HDC hdc)
 {
 	vMonsterSet::iterator p;
 	for (p = npc_set.begin(); p != npc_set.end(); p++)
 	{
 		if (*p != NULL)
 		{
-			//(*p)->setBloodh(1);
+			(*p)->setBloodh(20);
+			if ((*p)->CollideWith(playLuo, -30))
+			{
+				(*p)->setBloodh(20);
+				//p = npc_set.erase(p);
+				
+				(*p)->SetDead(true);
+				(*p)->SetVisible(false);//与萝卜碰撞，dead为true，visible为false，与炮弹碰撞而死，dead为true，visible为true
+				life--;
+				playLuo->SetScore(life);
+				playLuo->SetActive(false);
+				
+			}
+			
 			if ((*p)->IsDead() == true && (*p)->IsVisible() == true)
 			{
 				(*p)->SetVisible(false);
@@ -1453,26 +1651,66 @@ void GraphTest::updateNPCLife()
 				price = price + (*p)->GetScore();
 
 			}
+			if ((*p)->IsVisible() == false && (*p)->IsDead() == true && (*p)->getFrames() < 10  )
+			{
+				drawPrice(hdc, (*p)->GetScore(), (*p)->GetX(), (*p)->GetY() - (*p)->getFrames() * 5);
+				(*p)->setFrames();
+			}
+			
 		}
 	}
 }
 //更新道具生命
-void GraphTest::updateProLife()
+void GraphTest::updateProLife(HDC hdc)
 {
 	sPropertySet::iterator p;
+	int i = 0;
 	for (p = proper_set.begin(); p != proper_set.end();p++)
 	{
 		if (*p != NULL)
 		{
 			(*p)->setBloodh(20);
+			(*p)->sethurt(true);
 			if ((*p)->IsDead()== true && (*p)->IsVisible()==true)
 			{
 				(*p)->SetVisible(false);
 				LoadExplosion((*p)->GetX(), (*p)->GetY());
-				//price = price + (*p)->GetScore();
-				
+				price = price + (*p)->GetScore();
+			}
+			if ((*p)->IsDead() == true && (*p)->getFrames() < 10)
+			{
+				drawPrice(hdc, (*p)->GetScore(), (*p)->GetX(), (*p)->GetY() - (*p)->getFrames() * 5);
+				(*p)->setFrames();
+			}
+			if ((*p)->gethurt() == true)
+			{
+				drawBlood(hdc,i);
+				(*p)->sethurt(false);
 			}
 		}
+		i++;
+	}
+}
+void GraphTest::winState()
+{
+	vMonsterSet::iterator p;
+	for (p = npc_set.begin(); p != npc_set.end(); p++)
+	{
+		if (*p != NULL && npc_set.size()== waveNum[guan - 1]*5)
+		{
+			if((*p)->IsDead() == true)
+				monsterDead++;
+		}
+	}
+	if (waveNum[guan - 1]*5 <= monsterDead && life>=1)   //获胜
+	{
+		if (life >= 1 && life < 5)  //铜萝卜
+			luoType = -1;
+		if (life >= 5  && life <= 9)  //银萝卜
+			luoType = 0;
+		if (life == 10)  //金萝卜
+			luoType = 1;
+		GameState = GAME_WIN;
 	}
 }
 //加载关卡
@@ -1486,6 +1724,7 @@ void GraphTest::LoadGuan(int g)
 	frameTime = 0;
 	npc_set.clear();
 	updateNPCInfo();
+	life = 10;
 	switch (g)
 	{
 		case 1:

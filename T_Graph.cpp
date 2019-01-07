@@ -146,7 +146,7 @@ void T_Graph::PaintImage(HDC hdc, int x, int y, int width, int height)
 	//将源图选进内存设备中
 	HBITMAP hOldBitmap = (HBITMAP)SelectObject(memDC, hBmp);
 	SetStretchBltMode(hdc, COLORONCOLOR);
-	StretchBlt(hdc, x, y, width, height, 
+	StretchBlt(hdc, x, y, width, height,
 		       memDC, 0, 0, ImageWidth, ImageHeight, 
 		       SRCCOPY);
 
@@ -171,7 +171,7 @@ void T_Graph::PaintImage(HDC hdc, int x, int y, int width, int height, BYTE alph
 
 	SetStretchBltMode(hdc, COLORONCOLOR);
 
-	AlphaBlend(hdc, x, y, width, height, 
+	AlphaBlend(hdc, x, y, width, height,
 		       memDC, 0, 0, ImageWidth, ImageHeight, 
 		       dc_bf);
 	//StretchBlt(hdc, x, y, width, height, 

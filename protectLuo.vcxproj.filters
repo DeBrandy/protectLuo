@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="引擎">
+      <UniqueIdentifier>{d44ff567-6e6c-422e-9703-e43ac625ce8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphTest.cpp">
@@ -22,43 +25,43 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MonsterSprite.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="MyMenu.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="S_property.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_AI.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Audio.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Display.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Engine.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Graph.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Map.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Menu.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Scene.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Sprite.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
     <ClCompile Include="T_Util.cpp">
-      <Filter>源文件</Filter>
+      <Filter>引擎</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,52 +69,52 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MonsterSprite.h">
-      <Filter>头文件</Filter>
+      <Filter>引擎</Filter>
     </ClInclude>
     <ClInclude Include="MyMenu.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="S_property.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_AI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Config.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Audio.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Display.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Engine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Graph.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Layer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Map.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Menu.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Scene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Sprite.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="T_Util.h">
-      <Filter>头文件</Filter>
+      <Filter>引擎</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="S_property.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_AI.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Audio.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Config.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Display.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Engine.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Graph.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Layer.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Map.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Menu.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Scene.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Sprite.h">
+      <Filter>引擎</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Util.h">
+      <Filter>引擎</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

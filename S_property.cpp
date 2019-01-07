@@ -21,6 +21,7 @@ void S_property::Initiate(SPRITEINFO spInfo, PROPERTY pInfo)
 	frameRotate = spInfo.Rotation;		// 帧图片是否旋转变换(TRANSFER值之一)
 	frameAlpha = spInfo.Alpha;			// 帧图片透明度
 	blood = pInfo.life;					// 道具的生命值
+	frames = 0;
 	if (frameRatio>0)
 	{
 		colideWidth = GetRatioSize().cx;

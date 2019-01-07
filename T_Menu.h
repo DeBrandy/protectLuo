@@ -36,7 +36,8 @@ protected:
 	int bkColor;										// 背景颜色
 
 	T_Graph gm_menuBkg;									// 菜单背景
-	T_Graph BtnDIB;										// 菜单图片					
+	T_Graph BtnDIB;										// 菜单图片		
+		
 	vector<MENUITEM> gm_menuItems;						// 菜单项目
 
 	int GetMenuIndex(int x, int y);						// 根据当前鼠标坐标计算菜单项索引号
