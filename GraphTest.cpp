@@ -110,6 +110,7 @@ void GraphTest::GameLogic()
 		guans = guan;
 		LoadGuan(guan);
 		loadTowerMenu(50, 50);
+		loadUpdateMenu(400, 50);
 	}
 	if (GameState == GAME_RUN)
 	{
@@ -125,18 +126,39 @@ void GraphTest::GameLogic()
 			}
 		}
 		
-		if (run == 1)
-		{
+		
 			/*player->SetPosition(mouse_pt.x, mouse_pt.y);
 			bomb->SetPosition(mouse_pt.x, mouse_pt.y);*/
-			updateBombPos(bomb->GetDir());
-			t_scence->ScrollScene(bomb);
-			bomb->LoopFrame();
-
-			t_scence->ScrollScene(player);
-			player->LoopFrame();
-		}
 		
+			if (bomb.size()>0)
+			{
+				vSpriteSet::iterator p;
+				for (p = bomb.begin(); p != bomb.end(); p++)
+				{
+
+					if ((*p)->IsVisible() == true)
+					{
+						updateBombPos((*p), (*p)->GetDir());
+
+						(*p)->LoopFrame();
+					}
+
+				}
+			}
+
+			if (player.size() >0)
+			{
+				vSpriteSet::iterator p1;
+				for (p1 = player.begin(); p1 != player.end(); p1++)
+				{
+
+					if ((*p1)->IsVisible() == true)
+					{
+						(*p1)->LoopFrame();
+					}
+
+				}
+			}
 		LoadWaveNPC();
 		updateNPCPos();
 		updateNPCLife();
@@ -487,22 +509,62 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			int indexsn = choosesnow.MenuMouseClick(x, y);
 			int indexsun = choosesun.MenuMouseClick(x, y);*/
 
-			int indexl = chooselevel.MenuMouseClick(x, y);
+			
+			
 			if (indexf == 0)
 			{
+				move = 0;
 				towerkind = 1;
 				towerflag = 1;
+				vSpriteSet::iterator p;
+				vSpriteSet::iterator p1;
+				
+							LoadPlayer(0, 0);
+							LoadBomb(0, 0);
+				
 			}
-			if (towerflag == 1)
+			if (towerflag == 1&&move==1&&player.size()>0&& player.back()->active == true)
 			{
-				player->SetPosition(x - 113, y - 113);
-				bomb->SetPosition(x - 113, y - 113);
+				
+				player.back()->SetPosition(x - 113, y - 113);
+				bomb.back()->SetPosition(x - 113, y - 113);
 
-				player->SetVisible(true);
-				bomb->SetVisible(true);
-
-				run = 1;
+				player.back()->SetVisible(true);
+				bomb.back()->SetVisible(true);
+				player.back()->active = false;
+				move = 0;
 			}
+			move = 1;
+			int indexl = chooselevel.MenuMouseClick(x, y);
+			
+			vSpriteSet::iterator p;
+			vSpriteSet::iterator p1;
+			if (indexl == 0)
+			{
+				up2 = 0;
+				up1 = 1;
+			}
+			if(up1==1&&up2==1)
+			{
+				for (p = player.begin(), p1 = bomb.begin(); p != player.end(), p1 != bomb.end(); p++, p1++)
+				{
+					if (x >= (*p)->GetX() && x <= ((*p)->GetX() + (*p)->GetRatioSize().cx) && y >= (*p)->GetY() && y <= ((*p)->GetY() + (*p)->GetRatioSize().cy))
+					{
+						
+						(*p)->level++;
+						UpdateTowerLevel(*p);
+						(*p1)->level++;
+						UpdateBombLevel(*p1);
+					}
+					else
+					{
+						
+					}
+				}
+				up1 = 0;
+			}
+			up2 = 1;
+
 			/*if (indexbs == 0)
 			{
 			towerkind = 2;
@@ -717,7 +779,8 @@ void GraphTest::loadUpdateMenu(int x, int y)
 
 	chooselevel.AddMenuItem(mItem);
 
-	setMenu(&chooselevel, btn_width, btn_height, L"res\\up.png", setItems);
+	setMenu(&chooselevel, btn_width, btn_height, L"res\\tool\\up.png", setItems);
+
 
 	bg_buffer.Play(true);
 	//GameState = GAME_RUN;
@@ -984,13 +1047,26 @@ void GraphTest::LoadMap(char* path)
 		if (p->layer->ClassName() == "T_Map") p->layer->SetPosition(scn_x, scn_y);
 	}
 }
+void GraphTest::UpdateTowerLevel(T_Sprite* t)
+{
+	if (t->level == 1) t->SetSequence(FAN1, 4);
+	if (t->level == 2) t->SetSequence(FAN2, 4);
+	if (t->level == 3) t->SetSequence(FAN3, 4);
+
+}
+void GraphTest::UpdateBombLevel( T_Sprite* t)
+{
+	if (t->level == 1) t->SetSequence(FANB1, 5);
+	if (t->level == 2) t->SetSequence(FANB2, 5);
+	if (t->level == 3) t->SetSequence(FANB3, 5);
+}
 //加载炮塔
 void GraphTest::LoadPlayer(int x, int y)
 {
 	GAMELAYER gameLayer;
 	SPRITEINFO spInfo;
 	//加载玩家角色
-	/*if(towerkind==1)*/ player = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
+	/*if(towerkind==1)*/ T_Sprite* tplayer = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
 	/*if (towerkind == 2) player = new T_Sprite(L".\\res\\tower\\bluestaratt.png", 226, 226);
 	if (towerkind == 3) player = new T_Sprite(L".\\res\\tower\\bottle.png", 226, 226);
 	if (towerkind == 4) player = new T_Sprite(L".\\res\\tower\\shit.png", 226, 226);
@@ -1001,16 +1077,18 @@ void GraphTest::LoadPlayer(int x, int y)
 	spInfo.Dir = DIR_UP;
 	spInfo.Rotation = TRANS_NONE;
 	spInfo.Ratio = 0.9f;
-	spInfo.Level = 0;
+	spInfo.Level = 1;
 	spInfo.Score = 0;
 	spInfo.Speed = 0;
 	spInfo.Alpha = 220;
 	spInfo.X = x;
 	spInfo.Y = y;
 	spInfo.Visible = false;
-	player->Initiate(spInfo);
+	tplayer->Initiate(spInfo);
 
-	/*if (towerkind == 1)*/ player->SetSequence(FAN1, 4);
+	tplayer->SetSequence(FAN1, 4);
+	
+	/*if (towerkind == 1)*/ 
 	/*if (towerkind == 2) player->SetSequence(BS1, 3);
 	if (towerkind == 3) player->SetSequence(B1, 4);
 	if (towerkind == 4) player->SetSequence(S1, 3);
@@ -1018,8 +1096,9 @@ void GraphTest::LoadPlayer(int x, int y)
 	if (towerkind == 6)player->SetSequence(SUN1, 3);*/
 
 
-	player->SetLayerTypeID(LAYER_NPC);
-	gameLayer.layer = player;
+	tplayer->SetLayerTypeID(LAYER_NPC);
+	player.push_back(tplayer);
+	gameLayer.layer = tplayer;
 	gameLayer.type_id = LAYER_NPC;
 	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
 	gameLayer.layer->setZorder(gameLayer.z_order);
@@ -1148,7 +1227,7 @@ void GraphTest::LoadBomb(int x, int y)
 	GAMELAYER gameLayer;
 	SPRITEINFO spInfo;
 
-	/*if (towerkind == 1) */bomb = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
+	/*if (towerkind == 1) */T_Sprite* tbomb = new T_Sprite(L".\\res\\tower\\fan.png", 226, 226);
 	/*if (towerkind == 2) bomb = new T_Sprite(L".\\res\\tower\\bluestaratt.png", 226, 226);
 	if (towerkind == 3) bomb = new T_Sprite(L".\\res\\tower\\bottle.png", 226, 226);
 	if (towerkind == 4) bomb = new T_Sprite(L".\\res\\tower\\shit.png", 226, 226);
@@ -1160,14 +1239,14 @@ void GraphTest::LoadBomb(int x, int y)
 	spInfo.Dir = DIR_DOWN;
 	spInfo.Rotation = TRANS_NONE;
 	spInfo.Ratio = 1.0f;
-	spInfo.Level = 0;
+	spInfo.Level = 1;
 	spInfo.Score = 0;
 	spInfo.Speed = 5;
 	spInfo.Alpha = 220;
 	spInfo.Visible = false;
 	spInfo.X = x;
 	spInfo.Y = y;
-	bomb->Initiate(spInfo);
+	tbomb->Initiate(spInfo);
 	switch (spInfo.Dir)
 	{
 		/*case DIR_LEFT:
@@ -1196,7 +1275,9 @@ void GraphTest::LoadBomb(int x, int y)
 		if (towerkind == 6)bomb->SetSequence(SUNB1, 3);
 		break;*/
 	case DIR_DOWN:
-		/*if (towerkind == 1)*/ bomb->SetSequence(FANB1, 5);
+		 tbomb->SetSequence(FANB1, 5);
+		 
+		/*if (towerkind == 1)*/ 
 		/*if (towerkind == 2) bomb->SetSequence(BSB1, 7);
 		if (towerkind == 3) bomb->SetSequence(BB1, 5);
 		if (towerkind == 4) bomb->SetSequence(SB1, 3);
@@ -1205,8 +1286,9 @@ void GraphTest::LoadBomb(int x, int y)
 		break;
 	}
 
-	bomb->SetLayerTypeID(LAYER_NPC);
-	gameLayer.layer = bomb;
+	tbomb->SetLayerTypeID(LAYER_NPC);
+	bomb.push_back(tbomb);
+	gameLayer.layer = tbomb;
 	gameLayer.type_id = LAYER_NPC;
 	gameLayer.z_order = t_scence->getSceneLayers()->size() + 1;
 	gameLayer.layer->setZorder(gameLayer.z_order);
@@ -1350,49 +1432,53 @@ void GraphTest::updateNPCPos()
 	
 }
 
-void GraphTest::updateBombPos(int dir)
+void GraphTest::updateBombPos(T_Sprite* ts,int dir)
 {
-	if (bomb == NULL) return;
+	//if (bomb == NULL) return;
 	int nextStepX, nextStepY;
 	int SpeedX = 0, SpeedY = 0;
-	if (bomb->IsDead() == false && bomb->IsVisible() == true && bomb->IsActive() == true)
-	{
-		switch (dir)
-		{
-		case DIR_LEFT:
-			SpeedX = -bomb->GetSpeed();
-			SpeedY = 0;
+	
+			if (ts->IsDead() == false && ts->IsVisible() == true )
+			{
+				switch (dir)
+				{
+				case DIR_LEFT:
+					SpeedX = -ts->GetSpeed();
+					SpeedY = 0;
 
-			nextStepX = bomb->GetX() - bomb->GetSpeed();
+					nextStepX = ts->GetX() - ts->GetSpeed();
 
-			break;
-		case DIR_RIGHT:
-			SpeedX = bomb->GetSpeed();
-			SpeedY = 0;
+					break;
+				case DIR_RIGHT:
+					SpeedX = ts->GetSpeed();
+					SpeedY = 0;
 
-			nextStepX = bomb->GetX() + bomb->GetRatioSize().cx + bomb->GetSpeed();
+					nextStepX = ts->GetX() + ts->GetRatioSize().cx + ts->GetSpeed();
 
-			break;
-		case DIR_UP:
-			SpeedX = 0;
-			SpeedY = -bomb->GetSpeed();
+					break;
+				case DIR_UP:
+					SpeedX = 0;
+					SpeedY = -ts->GetSpeed();
 
-			nextStepY = bomb->GetY() - bomb->GetSpeed();
+					nextStepY = ts->GetY() - ts->GetSpeed();
 
-			break;
-		case DIR_DOWN:
-			SpeedX = 0;
-			SpeedY = bomb->GetSpeed();
+					break;
+				case DIR_DOWN:
+					SpeedX = 0;
+					SpeedY = ts->GetSpeed();
 
-			nextStepY = bomb->GetY() + bomb->GetRatioSize().cy + bomb->GetSpeed();
+					nextStepY = ts->GetY() + ts->GetRatioSize().cy + ts->GetSpeed();
 
-			break;
-		}
-		int x = bomb->GetX();
-		int y = bomb->GetY();
-		bomb->Move(SpeedX, SpeedY);
+					break;
+				}
+				int x = ts->GetX();
+				int y = ts->GetY();
+				ts->Move(SpeedX, SpeedY);
 
-	}
+			}
+		
+	
+	
 
 }
 
@@ -1574,8 +1660,7 @@ void GraphTest::LoadGuan(int g)
 			break;
 		}
 	}
-	LoadPlayer(0, 0);
-	LoadBomb(0, 0);
+	
 	LoadLuo(endX[g - 1], endY[g - 1]);
 }
 //倒计时

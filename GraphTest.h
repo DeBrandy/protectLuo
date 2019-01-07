@@ -10,6 +10,7 @@
 typedef vector<MonsterSprite*> vMonsterSet;
 typedef vector<S_property*> sPropertySet;
 typedef vector<T_Sprite*> vSpriteSet;
+typedef vector<T_Menu*> vMenuSet;
 
 /*typedef struct
 {
@@ -133,8 +134,10 @@ private:
 	static int luo_lF[100];				//好萝卜的
 	static int luo_eF[9];				//被吃了的萝卜
 
-	T_Sprite* player;				//游戏玩家
-	T_Sprite* bomb;					//游戏玩家
+	vSpriteSet player;				//游戏玩家
+	vSpriteSet bomb;					//游戏玩家
+
+	vMenuSet submenu;
 
 	//----------关卡常量----------
 	int guanNum = 4;					//总关卡数
@@ -228,6 +231,14 @@ private:
 	int towerflag;
 	int towerkind = 1;
 	int run = 0;
+	int up = 0;
+	int emp = 0;
+	int move = 1;
+	int towerlevel = 1;
+	int bomblevel = 1;
+	int menu = 0;
+	int up1 = 0;
+	int up2 = 0;
 
 	//----------资源加载-------------
 	void LoadWaveNPC();		//加载固定个数的固定怪物     **
@@ -251,7 +262,7 @@ private:
 	void updatePlayerLife();	//更新萝卜生命
 	void updateAnimation();		//更新炮塔帧序列
 	void updateNPCPos();		//更新NPC位置         **
-	void updateBombPos(int dir);		//更新子弹位置
+	void updateBombPos(T_Sprite* ts,int dir);		//更新子弹位置
 	void updateLuo();			//更新萝卜状态
 	void updatePlayerLevel();	//更新炮塔等级
 	void updateNPCInfo();		//更新每一波怪物信息  **
@@ -261,6 +272,9 @@ private:
 	//----------关卡----------------
 	void LoadGuan(int g);			//初始关卡信息
 	void countDown(HDC hdc);
+
+	void UpdateTowerLevel( T_Sprite* t);
+	void UpdateBombLevel( T_Sprite* t);
 
 	//测试
 public:
