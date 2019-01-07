@@ -135,40 +135,31 @@ void GraphTest::GameLogic()
 			frames = 0;
 			skillf = 0;
 		}
-		if (run == 1)
-		{
 			/*player->SetPosition(mouse_pt.x, mouse_pt.y);
 			bomb->SetPosition(mouse_pt.x, mouse_pt.y);*/
-		
-			if (bomb.size()>0)
+		if (bomb.size() > 0)
+		{
+			vSpriteSet::iterator p;
+			for (p = bomb.begin(); p != bomb.end(); p++)
 			{
-				vSpriteSet::iterator p;
-				for (p = bomb.begin(); p != bomb.end(); p++)
+				if ((*p)->IsVisible() == true)
 				{
-
-					if ((*p)->IsVisible() == true)
-					{
-						updateBombPos((*p), (*p)->GetDir());
-
-						(*p)->LoopFrame();
-					}
-
+					updateBombPos((*p), (*p)->GetDir());
+					(*p)->LoopFrame();
 				}
 			}
-
-			if (player.size() >0)
+		}
+		if (player.size() > 0)
+		{
+			vSpriteSet::iterator p1;
+			for (p1 = player.begin(); p1 != player.end(); p1++)
 			{
-				vSpriteSet::iterator p1;
-				for (p1 = player.begin(); p1 != player.end(); p1++)
+				if ((*p1)->IsVisible() == true)
 				{
-
-					if ((*p1)->IsVisible() == true)
-					{
-						(*p1)->LoopFrame();
-					}
-
+					(*p1)->LoopFrame();
 				}
 			}
+		}
 		LoadWaveNPC();
 		updateNPCPos();
 		updateAnimation();
@@ -176,7 +167,6 @@ void GraphTest::GameLogic()
 		winState();
 	}
 }
-
 void GraphTest::GameEnd()
 {
 	
