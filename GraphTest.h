@@ -56,11 +56,14 @@ private:
 	int scn_width, scn_height;			//场景宽高
 	POINT mouse_pt;						//当前鼠标位置
 
-	int frameCount = 0;             //帧计数器
-	int MaxFrameCount = 6000;      //总帧数
+	int frameCount = 0;					//帧计数器
+	int MaxFrameCount = 4000;			//总帧数
+	int frames = 0;						//技能帧技术
 
 	int frameTime = 0;             //倒数帧计数器
+	int monsterDead = 0;           //怪物死亡数量
 
+	int skillf;						//冰冻：1，减速2
 
 	//----------图片资源------------
 	T_Graph* lifeImg;				//萝卜生命图片
@@ -75,7 +78,13 @@ private:
 	T_Graph* start;					//开始
 	T_Graph* pause;					//暂停
 	T_Graph* luolife;				//萝卜生命的
-	//T_Graph* price[11];				//钱的图片
+	T_Graph* money[11];				//钱的图片
+	T_Graph* jin;                   //金萝卜
+	T_Graph* yin;					//银萝卜
+	T_Graph* tong;					//铜萝卜
+	T_Graph* wang;                  //王一清
+	T_Graph* zhang;					//张涵
+	T_Graph* bai;					//白星宇
 
 	//----------菜单类对象-----------
 	T_Menu t_menu;                  //游戏菜单类的对象
@@ -90,6 +99,12 @@ private:
 	MyMenu run_speed;				//运行界面的速度切换
 	MyMenu run_start;				//运行界面的开始暂停
 	MyMenu run_return;				//运行界面的返回
+	MyMenu win_menu;				//游戏成功
+	MyMenu over_menu;				//游戏失败
+	MyMenu s_ice;					//冰冻技能
+	MyMenu s_slow;					//减速技能
+	MyMenu s_del;					//删除技能
+	MyMenu s_life;					//急救包技能
 
 	MyMenu choosefan;
 	MyMenu choosebluestar;
@@ -104,6 +119,8 @@ private:
 	T_Menu* p_screenmenu;
 	T_Menu* p_setBack_menu;
 	T_Menu* p_start_menu;
+	MyMenu* p_winmenu;
+	MyMenu* p_overmenu;
 
 	//----------音乐类对象-------------
 	AudioDX ds;
@@ -151,6 +168,7 @@ private:
 	int life = 10;						//当前生命值
 	int price = 500;					//当前金币数
 	int monsterBegin = 0;                   //怪物方向位置
+	int luoType = 1;                        //萝卜等级，金萝卜：1，银萝卜：0，铜萝卜：-1
 	int monsterDir[42] = { DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_UP,DIR_RIGHT,
 		DIR_UP,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,
 		DIR_RIGHT,DIR_UP,DIR_LEFT,DIR_UP,DIR_RIGHT,DIR_DOWN,DIR_LEFT,DIR_DOWN,DIR_RIGHT,DIR_UP,DIR_RIGHT,DIR_DOWN,DIR_RIGHT,
@@ -162,8 +180,6 @@ private:
 	int stationY[4] = { 133,395,420,483 };              //每一关入口Y
 	int endX[4] = { 890,890,960,820 };               //每一关出口X     
 	int endY[4] = { 133,500,420,133 };              //每一关出口Y
-
-	
 
 	
 	int levelNPCNum = 0;				//当前关卡怪物数
@@ -231,6 +247,7 @@ private:
 	int towerflag;
 	int towerkind = 1;
 	int run = 0;
+
 	int up = 0;
 	int emp = 0;
 	int move = 1;
@@ -248,30 +265,39 @@ private:
 	void LoadProp(int t, int x, int y);		//加载道具
 	void loadMenu();		//加载菜单
 	void setMenu(T_Menu* menu, int w, int h, wstring path, wstring item[]);			//菜单值的设定
+	void setMenuT(MyMenu* menu, int w, int h, wstring path, wstring path1, wstring item[]);			//菜单值的设定
 	void LoadSkill();		//加载技能
 	void LoadMusic();		//加载音乐
 	void LoadExplosion(int x, int y);	//加载爆炸效果
 	void LoadBomb(int x, int y);		//加载子弹
 	void LoadImg();			//加载图片
-	void drawBlood(HDC hdc);		//画道具血量进度条
+	void drawBlood(HDC hdc,int i);		//画道具血量进度条
 	void drawMBlood(HDC hdc, int rx, int ry, MonsterSprite* npc);       //画怪物血量进度条
+	void drawPrice(HDC hdc, int m, int x, int y);		//画钱
 	void loadTowerMenu(int x, int y);
 	void loadUpdateMenu(int x, int y);
 
 	//---------更新---------------------
-	void updatePlayerLife();	//更新萝卜生命
+	void updatePlayerLife();	
 	void updateAnimation();		//更新炮塔帧序列
 	void updateNPCPos();		//更新NPC位置         **
 	void updateBombPos(T_Sprite* ts,int dir);		//更新子弹位置
 	void updateLuo();			//更新萝卜状态
 	void updatePlayerLevel();	//更新炮塔等级
 	void updateNPCInfo();		//更新每一波怪物信息  **
-	void updateNPCLife();       //更新怪物状态
-	void updateProLife();		//更新道具信息
+	void updateNPCLife(HDC hdc);       //更新怪物状态
+	void updateProLife(HDC hdc=0);		//更新道具信息
+	void winState();                    //胜利判断
 	void stopClickMusic(AudioDXBuffer button_click_buffer, AudioDXBuffer button_move_buffer);
+	void skillIce();
+	void skillSlow();
+	void skillDel();
+	void skillLife();
+
 	//----------关卡----------------
 	void LoadGuan(int g);			//初始关卡信息
 	void countDown(HDC hdc);
+	void ClearGuan();
 
 	void UpdateTowerLevel( T_Sprite* t);
 	void UpdateBombLevel( T_Sprite* t);

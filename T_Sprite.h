@@ -45,7 +45,7 @@ public:
 	int		lastDir;				// 上次方向
 	bool	active;					// 是否可活动
 	bool	dead;					// 是否死亡
-	int		speed;					// 初始移动速度
+	float		speed;					// 初始移动速度
 	int		level;					// 初始游戏等级
 	int		score;					// 游戏分值
 

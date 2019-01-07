@@ -20,13 +20,14 @@ protected:
 	int bloodh = 0;                //受到伤害的应掉的血量
 	boolean hurt;                  //是否受到伤害
 	boolean decSpeed;             //是否减速
-
+	int frames;
 public:
 
 	MonsterSprite(wstring imgPath, int frameWidth = 0, int frameHeight = 0);
 	// 析构函数
 	virtual ~MonsterSprite(void);
-
+	void setFrames() { frames++; }
+	int getFrames() { return frames; }
 	void Initiate(MONSTER spInfo);
 	int getBloodh() { return bloodh; }
 	void setBloodh(int b) { bloodh += b; }
@@ -36,7 +37,8 @@ public:
 	void setDecSpeed(boolean dec) { decSpeed = dec; }
 	boolean getDecSpeed() { return decSpeed; }
 	// 检测地图碰撞
-	bool CollideWith(IN T_Map* map,int distance = 0);
+	bool CollideWithMap(IN T_Map* map,double distance);
+	bool CollideWith(T_Sprite* target, int distance = 0);
 	void setMonsterToBar() { monsterToBar ++; }
 	int getMonsterToBar() { return monsterToBar; }
 	//void setBarStance(int n) { barStance = n; }

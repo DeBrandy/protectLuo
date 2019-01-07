@@ -26,7 +26,7 @@ void MonsterSprite::Initiate(MONSTER spInfo)
 	dead = false;
 	monsterToBar = 0;                   //怪物与障碍碰撞次数
 	barStance = spInfo.instance;            //怪物与地图的碰撞距离
-
+	frames = 0;
 
 	if (frameRatio>0)
 	{
@@ -40,7 +40,7 @@ void MonsterSprite::Initiate(MONSTER spInfo)
 	}
 }
 // 检测地图碰撞
-bool MonsterSprite::CollideWith(IN T_Map* map,int distance)
+bool MonsterSprite::CollideWithMap(IN T_Map* map,double distance)
 {
 	// 如果背景为图片则不检测地图碰撞
 	if (map->getMapRows() == 0 && map->getMapCols() == 0)
@@ -140,5 +140,32 @@ bool MonsterSprite::CollideWith(IN T_Map* map,int distance)
 		}
 	}
 	return false;
+}
+
+bool MonsterSprite::CollideWith(T_Sprite * target, int distance)
+{
+	if(IsVisible())
+	{ 
+		//计算参与碰撞检测的角色矩形区域
+		RECT targetRect = *(target->GetCollideRect());
+		RECT hitRec;
+		hitRec.left = targetRect.left - distance;
+		hitRec.top = targetRect.top - distance;
+		hitRec.right = targetRect.right + distance;
+		hitRec.bottom = targetRect.bottom + distance;
+		RECT thisRect = *(this->GetCollideRect());
+		int cw = abs(thisRect.right - thisRect.left);
+		int tw = abs(hitRec.right - hitRec.left);
+		int ch = abs(thisRect.bottom - thisRect.top);
+		int th = abs(hitRec.bottom - hitRec.top);
+
+		//方式一：同时满足4个条件
+		return thisRect.left <= hitRec.right &&
+			hitRec.left <= thisRect.right &&
+			thisRect.top <= hitRec.bottom &&
+			hitRec.top <= thisRect.bottom;
+	}
+	else
+		return false;
 }
 
