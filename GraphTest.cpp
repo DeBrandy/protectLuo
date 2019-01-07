@@ -124,7 +124,16 @@ void GraphTest::GameLogic()
 				frameCount++;
 			}
 		}
-		
+		if (skillf != 0)
+		{
+			frames++;
+		}
+		if (frames > 40)
+		{
+			speedf = 1;
+			frames = 0;
+			skillf = 0;
+		}
 		if (run == 1)
 		{
 			/*player->SetPosition(mouse_pt.x, mouse_pt.y);
@@ -217,7 +226,7 @@ void GraphTest::GamePaint(HDC hdc)
 			else
 				light.PaintRegion(light.GetBmpHandle(), hdc, lInfo[guan - 1].X, lInfo[guan - 1].Y, 98, 0, 98, 92, 1, TRANS_NONE, 200);
 		}
-		countDown(hdc);
+		
 		vMonsterSet::iterator p;
 		for (p = npc_set.begin(); p != npc_set.end(); p++)
 		{
@@ -249,11 +258,17 @@ void GraphTest::GamePaint(HDC hdc)
 		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
 
 		luolife->PaintRegion(luolife->GetBmpHandle(), hdc, playLuo->GetX() + 70, playLuo->GetY() + 15, 0, (life - 1) * 37, 74, 36, 0.8);
-
+		//菜单按钮
 		run_speed.DrawMenu(hdc,0.8);
 		run_start.DrawMenu(hdc,0.8);
 		run_return.DrawMenu(hdc,0.8);
+		//技能按钮
+		s_ice.DrawMenu(hdc);
+		s_del.DrawMenu(hdc);
+		s_life.DrawMenu(hdc);
+		s_slow.DrawMenu(hdc);
 
+		//炮塔按钮
 		choosefan.DrawMenu(hdc,0.8);
 		choosebluestar.DrawMenu(hdc);
 		choosebottle.DrawMenu(hdc);
@@ -261,6 +276,7 @@ void GraphTest::GamePaint(HDC hdc)
 		choosesnow.DrawMenu(hdc);
 		choosesun.DrawMenu(hdc);
 		chooselevel.DrawMenu(hdc);
+		countDown(hdc);
 		if (frameTime == 81)
 			updateProLife(hdc);
 		updateNPCLife(hdc);
@@ -478,6 +494,10 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			run_return.MenuMouseMove(x, y);		//返回
 			run_speed.MenuMouseMove(x, y);		//切换速度
 			run_start.MenuMouseMove(x, y);		//开始暂停
+			s_ice.MenuMouseMove(x, y);					//冰冻技能
+			s_slow.MenuMouseMove(x, y);					//减速技能
+			s_del.MenuMouseMove(x, y);					//删除技能
+			s_life.MenuMouseMove(x, y);
 
 			choosefan.MenuMouseMove(x, y);
 			choosebluestar.MenuMouseMove(x, y);
@@ -519,6 +539,28 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				GameState = GAME_PAUSE;
 			}
 
+			int indexs = s_ice.MenuMouseClick(x, y);					//冰冻技能
+			if (indexs == 0)
+			{
+				skillIce();
+				skillf = 1;
+			}
+			indexs = s_slow.MenuMouseClick(x, y);
+			if (indexs == 0)
+			{
+				skillSlow();
+				skillf = 2;
+			}
+			indexs = s_del.MenuMouseClick(x, y);					//删除技能
+			if (indexs == 0)
+			{
+				skillDel();
+			}
+			indexs = s_life.MenuMouseClick(x, y);
+			if (indexs == 0)
+			{
+				skillLife();
+			}
 			int indexf = choosefan.MenuMouseClick(x, y);
 			/*int indexbs = choosebluestar.MenuMouseClick(x, y);
 			int indexb = choosebottle.MenuMouseClick(x, y);
@@ -972,6 +1014,25 @@ void GraphTest::loadMenu()
 	//失败
 	setMenuT(p_overmenu, btn_width, btn_height, L"res\\menu\\0.png", L"res\\menu\\2.png", setItem);
 
+	//-----------------技能按钮---------
+	btn_width = 65;
+	btn_height = 65;
+	//开始暂停
+	mItem.pos.x = 480;
+	mItem.pos.y = 560;
+	mItem.ItemName = setItems[0];
+	s_ice.AddMenuItem(mItem);
+	mItem.pos.x += 110;
+	s_del.AddMenuItem(mItem);
+	mItem.pos.x += 110;
+	s_life.AddMenuItem(mItem);
+	mItem.pos.x += 110;
+	s_slow.AddMenuItem(mItem);
+	setMenu(&s_ice, btn_width, btn_height, L"res\\menu\\skill_ice.png", setItems);
+	setMenu(&s_del, btn_width, btn_height, L"res\\menu\\skill_del.png", setItems);
+	setMenu(&s_life, btn_width, btn_height, L"res\\menu\\skill_life.png", setItems);
+	setMenu(&s_slow, btn_width, btn_height, L"res\\menu\\skill_slow.png", setItems);
+
 	bg_buffer.Play(true);
 	
 	
@@ -1000,6 +1061,26 @@ void GraphTest::stopClickMusic(AudioDXBuffer button_click_buffer, AudioDXBuffer 
 	run_return.SetMoveSound(&button_move_buffer);
 	main_menu.SetMoveSound(&button_move_buffer);
 	set_menu.SetMoveSound(&button_move_buffer);
+}
+void GraphTest::skillIce()
+{
+	speedf = 0;
+}
+void GraphTest::skillSlow()
+{
+	speedf = 0;
+}
+void GraphTest::skillDel()
+{
+	for (int i = 0; i < npc_set.size(); i++)
+	{
+		npc_set.at(i)->SetDead(true);
+	}
+}
+void GraphTest::skillLife()
+{
+	if (life < 10)
+		life++;
 }
 //设置菜单，load调用set
 void GraphTest::setMenu(T_Menu* menu,int w,int h,wstring path,wstring item[])
@@ -1630,7 +1711,6 @@ void GraphTest::updateNPCLife(HDC hdc)
 	{
 		if (*p != NULL)
 		{
-			(*p)->setBloodh(20);
 			if ((*p)->CollideWith(playLuo, -30))
 			{
 				(*p)->setBloodh(20);
@@ -1669,8 +1749,8 @@ void GraphTest::updateProLife(HDC hdc)
 	{
 		if (*p != NULL)
 		{
-			(*p)->setBloodh(20);
-			(*p)->sethurt(true);
+			//(*p)->setBloodh(20);
+			//(*p)->sethurt(true);
 			if ((*p)->IsDead()== true && (*p)->IsVisible()==true)
 			{
 				(*p)->SetVisible(false);
@@ -1720,7 +1800,8 @@ void GraphTest::LoadGuan(int g)
 	price = 500;
 	frameCount = 0;
 	frameTime = 0;
-	
+	skillf = 0;
+
 	updateNPCInfo();
 	life = 10;
 	switch (g)

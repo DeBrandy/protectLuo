@@ -57,10 +57,12 @@ private:
 
 	int frameCount = 0;             //帧计数器
 	int MaxFrameCount = 4000;      //总帧数
-	int framep = 0;
+	int frames = 0;					//技能帧技术
 
 	int frameTime = 0;             //倒数帧计数器
 	int monsterDead = 0;           //怪物死亡数量
+
+	int skillf;						//冰冻：1，减速2
 
 	//----------图片资源------------
 	T_Graph* lifeImg;				//萝卜生命图片
@@ -98,6 +100,10 @@ private:
 	MyMenu run_return;				//运行界面的返回
 	MyMenu win_menu;				//游戏成功
 	MyMenu over_menu;				//游戏失败
+	MyMenu s_ice;					//冰冻技能
+	MyMenu s_slow;					//减速技能
+	MyMenu s_del;					//删除技能
+	MyMenu s_life;					//急救包技能
 
 	MyMenu choosefan;
 	MyMenu choosebluestar;
@@ -272,6 +278,11 @@ private:
 	void updateProLife(HDC hdc=0);		//更新道具信息
 	void winState();                    //胜利判断
 	void stopClickMusic(AudioDXBuffer button_click_buffer, AudioDXBuffer button_move_buffer);
+	void skillIce();
+	void skillSlow();
+	void skillDel();
+	void skillLife();
+
 	//----------关卡----------------
 	void LoadGuan(int g);			//初始关卡信息
 	void countDown(HDC hdc);
