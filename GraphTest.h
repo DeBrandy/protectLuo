@@ -275,6 +275,7 @@ private:
 	//----------关卡----------------
 	void LoadGuan(int g);			//初始关卡信息
 	void countDown(HDC hdc);
+	void ClearGuan();
 
 	//测试
 public:

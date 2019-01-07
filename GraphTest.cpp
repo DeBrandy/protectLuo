@@ -105,7 +105,7 @@ void GraphTest::GameInit()
 
 void GraphTest::GameLogic()
 {
-	if (guans != guan)
+	if (guans != guan && GameState == GAME_RUN)
 	{
 		guans = guan;
 		LoadGuan(guan);
@@ -494,6 +494,7 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			if (index == 0)
 			{
 				GameState = GAME_SCREEN;
+				ClearGuan();
 				guans = 0;
 			}
 			index = run_speed.MenuMouseClick(x, y);
@@ -713,7 +714,7 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 		if (ActionType == MOUSE_LCLICK)
 		{
 			int index = p_winmenu->MenuMouseClick(x, y);
-			switch (index)
+			switch (index)\
 			{
 			case 0:
 				GameState = GAME_SCREEN;
@@ -1418,7 +1419,6 @@ void GraphTest::drawPrice(HDC hdc, int m,int x,int y)
 	{
 	case 14:
 		money[0]->PaintImage(hdc, x, y, money[0]->GetImageWidth(), money[0]->GetImageHeight(),255);
-		
 		break;
 	case 50:
 		money[1]->PaintImage(hdc, x, y);
@@ -1716,13 +1716,11 @@ void GraphTest::winState()
 //¼ÓÔØ¹Ø¿¨
 void GraphTest::LoadGuan(int g)
 {
-	t_scence = NULL;
-	proper_set.clear();
 	t_scence = new T_Scene();
 	price = 500;
 	frameCount = 0;
 	frameTime = 0;
-	npc_set.clear();
+	
 	updateNPCInfo();
 	life = 10;
 	switch (g)
@@ -1840,4 +1838,14 @@ void GraphTest::countDown(HDC hdc)
 	{
 		time4->PaintImage(hdc, 480, 230, time4->GetImageWidth(), time4->GetImageHeight(), 255);
 	}
+}
+
+void GraphTest::ClearGuan()
+{
+	delete t_scence;
+	t_scence = NULL;
+	proper_set.clear();
+	proper_set.swap(vector<S_property*>());
+	npc_set.clear();
+	npc_set.swap(vector<MonsterSprite*>());
 }
