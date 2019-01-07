@@ -144,7 +144,11 @@ void GraphTest::GameLogic()
 			{
 				if ((*p)->IsVisible() == true)
 				{
-					updateBombPos((*p), (*p)->GetDir());
+					updateBombPos((*p), (*p)->GetDir(),npc_set.at(0)->GetX()-60, npc_set.at(0)->GetY()-50);
+					if (npc_set.at(0)->CollideWith((*p), -30))
+					{
+						npc_set.at(0)->setBloodh(20);
+					}
 					(*p)->LoopFrame();
 				}
 			}
@@ -1690,7 +1694,7 @@ void GraphTest::updateNPCPos()
 	
 }
 
-void GraphTest::updateBombPos(T_Sprite* ts,int dir)
+void GraphTest::updateBombPos(T_Sprite* ts,int dir,int x,int y)
 {
 	//if (bomb == NULL) return;
 	int nextStepX, nextStepY;
@@ -1698,7 +1702,7 @@ void GraphTest::updateBombPos(T_Sprite* ts,int dir)
 	
 			if (ts->IsDead() == false && ts->IsVisible() == true )
 			{
-				switch (dir)
+				/*switch (dir)
 				{
 				case DIR_LEFT:
 					SpeedX = -ts->GetSpeed();
@@ -1728,10 +1732,21 @@ void GraphTest::updateBombPos(T_Sprite* ts,int dir)
 					nextStepY = ts->GetY() + ts->GetRatioSize().cy + ts->GetSpeed();
 
 					break;
-				}
-				int x = ts->GetX();
-				int y = ts->GetY();
-				ts->Move(SpeedX, SpeedY);
+				}*/
+				nextStepX = (x - ts->GetX()) + ts->GetSpeed();
+				nextStepY=(y-ts->GetY()) + ts->GetSpeed();
+				/*int x = ts->GetX();
+				int y = ts->GetY();*/
+				
+
+				if(x>ts->GetX()&&y>ts->GetY())
+					ts->Move(ts->GetSpeed(), ts->GetSpeed());
+				if (x>ts->GetX() && y<ts->GetY())
+					ts->Move(ts->GetSpeed(), -ts->GetSpeed());
+				if (x<ts->GetX() && y>ts->GetY())
+					ts->Move(-ts->GetSpeed(), ts->GetSpeed());
+				if (x<ts->GetX() && y<ts->GetY())
+					ts->Move(-ts->GetSpeed(), -ts->GetSpeed());
 
 			}
 		

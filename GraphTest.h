@@ -281,7 +281,7 @@ private:
 	void updatePlayerLife();	
 	void updateAnimation();		//更新炮塔帧序列
 	void updateNPCPos();		//更新NPC位置         **
-	void updateBombPos(T_Sprite* ts,int dir);		//更新子弹位置
+	void updateBombPos(T_Sprite* ts,int dir,int x,int y);		//更新子弹位置
 	void updateLuo();			//更新萝卜状态
 	void updatePlayerLevel();	//更新炮塔等级
 	void updateNPCInfo();		//更新每一波怪物信息  **
