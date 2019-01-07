@@ -55,9 +55,9 @@ private:
 	int scn_width, scn_height;			//场景宽高
 	POINT mouse_pt;						//当前鼠标位置
 
-	int frameCount = 0;             //帧计数器
-	int MaxFrameCount = 4000;      //总帧数
-	int frames = 0;					//技能帧技术
+	int frameCount = 0;					//帧计数器
+	int MaxFrameCount = 4000;			//总帧数
+	int frames = 0;						//技能帧技术
 
 	int frameTime = 0;             //倒数帧计数器
 	int monsterDead = 0;           //怪物死亡数量

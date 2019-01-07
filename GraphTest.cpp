@@ -48,14 +48,14 @@ LPCTSTR GraphTest::tower_files[6] = { L".\\res\\tower\\bottle.png",L".\\res\\tow
 
 MONSTER GraphTest::mInfo[8] = {
 	// x   y  怪物图片   怪物速度	减速后速度	怪物生命值	是否可见 怪物奖励金	图片缩放比率  翻转 方向 与地图碰撞距离
-	{ 0,0,L"res\\monster\\boss.png", 1 , 1 , 12 ,true , 268 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\fat1.png", 1 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\fat2.png", 1, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\flyblack.png", 3 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\flyyellow.png", 3 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
-	{ 0,0, L"res\\monster\\smallpink.png", 2 , 2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
-	{ 0,0, L"res\\monster\\smallpurple.png", 2 ,2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
-	{ 0,0, L"res\\monster\\smallred.png", 2 , 2 , 6 ,true , 14 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
+	{ 0,0,L"res\\monster\\boss.png", 2 , 1 , 12 ,true , 268 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat1.png", 2 , 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\fat2.png", 2, 1 , 9 ,true , 168 , 0.5 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyblack.png", 5 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\flyyellow.png", 5 , 3 , 3 ,true , 14 , 0.6 ,TRANS_NONE, DIR_RIGHT,30 },
+	{ 0,0, L"res\\monster\\smallpink.png", 3 , 2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallpurple.png", 3 ,2 , 6 ,true , 14 , 0.8 , TRANS_NONE,DIR_RIGHT,35 },
+	{ 0,0, L"res\\monster\\smallred.png", 3 , 2 , 6 ,true , 14 ,0.6 ,TRANS_NONE, DIR_RIGHT,32 }
 };
 SPRITEINFO GraphTest::lInfo[4] = {
 	{ 170, 133,DIR_DOWN,1,1,1,0,1,0,255,1,1 },
@@ -1068,7 +1068,7 @@ void GraphTest::skillIce()
 }
 void GraphTest::skillSlow()
 {
-	speedf = 0;
+	speedf = 0.95;
 }
 void GraphTest::skillDel()
 {
@@ -1081,6 +1081,9 @@ void GraphTest::skillLife()
 {
 	if (life < 10)
 		life++;
+	playLuo->SetActive(false);
+	if (life == 10)
+		playLuo->SetSequence(luo_lF, 100);
 }
 //设置菜单，load调用set
 void GraphTest::setMenu(T_Menu* menu,int w,int h,wstring path,wstring item[])
@@ -1688,7 +1691,10 @@ void GraphTest::updateNPCInfo()
 		int m = rand() % 7 + 2;
 		for (int j = 0; j < monster; j++)//
 		{
-			NPCFrame[5*i+j].frame = i*waveLength+j*monsterLength;
+			if (m > 3)
+				NPCFrame[5 * i + j].frame = i*waveLength + j*(monsterLength / mInfo[m].speed)+3;
+			else
+				NPCFrame[5 * i + j].frame = i*waveLength + j*(monsterLength-7);
 			if (i == waveNum[guan-1] - 1 && j == monster - 1)//BOSS
 			{
 				NPCFrame[5 * i + j].minfo = 1;
@@ -1801,7 +1807,7 @@ void GraphTest::LoadGuan(int g)
 	frameCount = 0;
 	frameTime = 0;
 	skillf = 0;
-
+	speedf = 1;
 	updateNPCInfo();
 	life = 10;
 	switch (g)
