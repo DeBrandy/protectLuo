@@ -294,11 +294,18 @@ void GraphTest::GamePaint(HDC hdc)
 		choosesun.DrawMenu(hdc);
 		chooselevel.DrawMenu(hdc);
 		countDown(hdc);
-		if (focused == 1)
+		if (focused != 0)
 		{
-			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 0, 0, 30, 36, 1);
-			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
-			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+			if (focusedm == 0)
+			{
+				fo->PaintRegion(fo->GetBmpHandle(), hdc, proper_set.at(focused - 1)->GetX() + 20, proper_set.at(focused - 1)->GetY() - 10, 0, 0, 30, 36, 0.8);
+			}
+			else
+			{
+				fo->PaintRegion(fo->GetBmpHandle(), hdc, npc_set.at(focused - 1)->GetX() + 30, npc_set.at(focused - 1)->GetY() - 10, 0, 0, 30, 36, 0.8);
+			}
+			//fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+			//fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
 		}
 		if (frameTime == 81)
 			updateProLife(hdc);
@@ -585,20 +592,42 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			{
 				skillLife();
 			}
-
+			
 			if (x >= 70 && x <= 1052 && y >= 56 && y <= 584)
 			{
+				for (int i = 0; i < npc_set.size(); i++)
+				{
+					if(npc_set.at(i)->CollideWithMouse(x, y, 2))
+					{ 
+						if (focused != 0 && npc_set.at(focused - 1)->CollideWithMouse(x, y, 2))
+						{
+							focused = 0;
+							break;
+						}
+						else if (npc_set.at(i)->CollideWithMouse(x, y, 2) && focused != i + 1)
+						{
+							focused = i + 1;
+							fx = x;
+							fy = y;
+							focusedm = 1;
+							break;
+						}
+					}
+				}
 				for (int i = 0; i < proper_set.size(); i++)
 				{
-					if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused == 0)
-					{
-						focused = 1;
-						fx = x;
-						fy = y;
-					}
-					else if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused == 1)
+					if (focused != 0 && proper_set.at(focused - 1)->CollideWithMouse(x, y, 2))
 					{
 						focused = 0;
+						break;
+					}
+					else if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused != i + 1)
+					{
+						focused = i + 1;
+						fx = x;
+						fy = y;
+						focusedm = 0;
+						break;
 					}
 				}
 				//езкЧ

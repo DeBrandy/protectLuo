@@ -39,6 +39,7 @@ public:
 	// ¼ì²âµØÍ¼Åö×²
 	bool CollideWithMap(IN T_Map* map,double distance);
 	bool CollideWith(T_Sprite* target, int distance = 0);
+	bool CollideWithMouse(int x, int y, int distance);
 	void setMonsterToBar() { monsterToBar ++; }
 	int getMonsterToBar() { return monsterToBar; }
 	//void setBarStance(int n) { barStance = n; }

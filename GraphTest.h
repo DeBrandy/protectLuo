@@ -64,7 +64,8 @@ private:
 	int monsterDead = 0;           //怪物死亡数量
 	//---------flag------
 	int skillf;						//冰冻：1，减速2
-	int focused;					//锁定
+	int focused = 0;					//锁定道具
+	int focusedm = 0;					//锁定怪物
 	int fx;							//锁定的x坐标
 	int fy;							//锁定的y坐标
 
