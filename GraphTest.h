@@ -55,12 +55,19 @@ private:
 	int wnd_width, wnd_height;			//游戏窗口宽高
 	int scn_width, scn_height;			//场景宽高
 	POINT mouse_pt;						//当前鼠标位置
-
-	int frameCount = 0;             //帧计数器
-	int MaxFrameCount = 6000;      //总帧数
+	//----------帧计数器------------
+	int frameCount = 0;					//帧计数器
+	int MaxFrameCount = 4000;			//总帧数
+	int frames = 0;						//技能帧技术
 
 	int frameTime = 0;             //倒数帧计数器
-
+	int monsterDead = 0;           //怪物死亡数量
+	//---------flag------
+	int skillf;						//冰冻：1，减速2
+	int focused = 0;					//锁定道具
+	int focusedm = 0;					//锁定怪物
+	int fx;							//锁定的x坐标
+	int fy;							//锁定的y坐标
 
 	//----------图片资源------------
 	T_Graph* lifeImg;				//萝卜生命图片
@@ -75,7 +82,14 @@ private:
 	T_Graph* start;					//开始
 	T_Graph* pause;					//暂停
 	T_Graph* luolife;				//萝卜生命的
-	//T_Graph* price[11];				//钱的图片
+	T_Graph* money[11];				//钱的图片
+	T_Graph* jin;                   //金萝卜
+	T_Graph* yin;					//银萝卜
+	T_Graph* tong;					//铜萝卜
+	T_Graph* wang;                  //王一清
+	T_Graph* zhang;					//张涵
+	T_Graph* bai;					//白星宇
+	T_Graph* fo;					//锁定图片
 
 	//----------菜单类对象-----------
 	T_Menu t_menu;                  //游戏菜单类的对象
@@ -262,7 +276,7 @@ private:
 	void updatePlayerLife();	//更新萝卜生命
 	void updateAnimation();		//更新炮塔帧序列
 	void updateNPCPos();		//更新NPC位置         **
-	void updateBombPos(T_Sprite* ts,int dir);		//更新子弹位置
+	void updateBombPos(T_Sprite* ts,int dir,int x,int y);		//更新子弹位置
 	void updateLuo();			//更新萝卜状态
 	void updatePlayerLevel();	//更新炮塔等级
 	void updateNPCInfo();		//更新每一波怪物信息  **

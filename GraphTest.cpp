@@ -125,40 +125,47 @@ void GraphTest::GameLogic()
 				frameCount++;
 			}
 		}
-		
-		
+
+		if (skillf != 0)
+		{
+			frames++;
+		}
+		if (frames > 40)
+		{
+			speedf = 1;
+			frames = 0;
+			skillf = 0;
+		}
+
 			/*player->SetPosition(mouse_pt.x, mouse_pt.y);
 			bomb->SetPosition(mouse_pt.x, mouse_pt.y);*/
-		
-			if (bomb.size()>0)
+		if (bomb.size() > 0)
+		{
+			vSpriteSet::iterator p;
+			for (p = bomb.begin(); p != bomb.end(); p++)
 			{
-				vSpriteSet::iterator p;
-				for (p = bomb.begin(); p != bomb.end(); p++)
+				if ((*p)->IsVisible() == true)
 				{
-
-					if ((*p)->IsVisible() == true)
+					updateBombPos((*p), (*p)->GetDir(),npc_set.at(0)->GetX()-60, npc_set.at(0)->GetY()-50);
+					if (npc_set.at(0)->CollideWith((*p), -30))
 					{
-						updateBombPos((*p), (*p)->GetDir());
-
-						(*p)->LoopFrame();
+						npc_set.at(0)->setBloodh(20);
 					}
-
+					(*p)->LoopFrame();
 				}
 			}
-
-			if (player.size() >0)
+		}
+		if (player.size() > 0)
+		{
+			vSpriteSet::iterator p1;
+			for (p1 = player.begin(); p1 != player.end(); p1++)
 			{
-				vSpriteSet::iterator p1;
-				for (p1 = player.begin(); p1 != player.end(); p1++)
+				if ((*p1)->IsVisible() == true)
 				{
-
-					if ((*p1)->IsVisible() == true)
-					{
-						(*p1)->LoopFrame();
-					}
-
+					(*p1)->LoopFrame();
 				}
 			}
+		}
 		LoadWaveNPC();
 		updateNPCPos();
 		updateNPCLife();
@@ -167,7 +174,6 @@ void GraphTest::GameLogic()
 		updateLuo();
 	}
 }
-
 void GraphTest::GameEnd()
 {
 	
@@ -293,6 +299,69 @@ void GraphTest::GamePaint(HDC hdc)
 		choosesnow.DrawMenu(hdc);
 		choosesun.DrawMenu(hdc);
 		chooselevel.DrawMenu(hdc);
+
+		countDown(hdc);
+		if (focused != 0)
+		{
+			if (focusedm == 0)
+			{
+				fo->PaintRegion(fo->GetBmpHandle(), hdc, proper_set.at(focused - 1)->GetX() + 20, proper_set.at(focused - 1)->GetY() - 10, 0, 0, 30, 36, 0.8);
+			}
+			else
+			{
+				fo->PaintRegion(fo->GetBmpHandle(), hdc, npc_set.at(focused - 1)->GetX() + 30, npc_set.at(focused - 1)->GetY() - 10, 0, 0, 30, 36, 0.8);
+			}
+			//fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+			//fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+		}
+		if (frameTime == 81)
+			updateProLife(hdc);
+		updateNPCLife(hdc);
+		//GameState = GAME_WIN;
+	}
+	else if (GameState == GAME_PAUSE)
+	{
+		pause->PaintRegion(pause->GetBmpHandle(),hdc, 850, 10,0,0, pause->GetImageWidth(), pause->GetImageHeight()/2,0.8,0,200);
+	}
+	else if (GameState == GAME_WIN)
+	{
+		p_winmenu->DrawTMenu(hdc,0.95);
+		if (luoType == -1)     //铜萝卜
+			tong->PaintImage(hdc, 505, 40,118,160, 250);
+		if (luoType == 0)   //银萝卜
+			yin->PaintImage(hdc, 505, 40, 118, 160, 250);
+		if (luoType == 1)   //金萝卜
+			jin->PaintImage(hdc, 505, 40, 118, 160, 250);
+		RectF infoRec;
+		infoRec.X = 435;
+		infoRec.Y = 225;
+		infoRec.Width = 250;
+		infoRec.Height = 40;
+		LPCTSTR info = L"你获得的宝石数 ";
+		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		infoRec.X += 120;
+		info = T_Util::int_to_wstring(price / 1000);
+		T_Graph::PaintText(hdc, infoRec, info, 18, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+	}
+	else if (GameState == GAME_OVER)
+	{
+		p_overmenu->DrawTMenu(hdc, 0.95);
+		RectF infoRec;
+		infoRec.X = 610;
+		infoRec.Y = 220;
+		infoRec.Width = 40;
+		infoRec.Height = 40;
+		LPCTSTR info = T_Util::int_to_wstring(waveNum[guan - 1]);
+		T_Graph::PaintText(hdc, infoRec, info, 22, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		info = T_Util::int_to_wstring(frameCount / (MaxFrameCount / waveNum[guan - 1]) + 1);
+		infoRec.X = 540;
+		T_Graph::PaintText(hdc, infoRec, info, 22, L"华康少女文字W5", Color::White, FontStyleBold, StringAlignmentCenter);
+		infoRec.X = 300;
+		infoRec.Y = 350;
+		infoRec.Width = 550;
+		infoRec.Height = 100;
+		info = L"危机时使用魔法技能可以给怪物致命一击！";
+		T_Graph::PaintText(hdc, infoRec, info, 17, L"华康少女文字W5", Color(10,127,207), FontStyleBold, StringAlignmentCenter);
 	}
 }
 
@@ -473,7 +542,8 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			chooselevel.MenuMouseMove(x, y);
 		}
 		if (ActionType == MOUSE_LCLICK)
-		{
+		{	
+			//菜单
 			int index = run_return.MenuMouseClick(x, y);
 			if (index == 0)
 			{
@@ -501,8 +571,69 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				setMenu(&run_start, 56, 56, L"res\\menu\\zan.png", setItems);
 				GameState = GAME_PAUSE;
 			}
+			//技能
+			int indexskill = s_ice.MenuMouseClick(x, y);					//冰冻技能
+			if (indexskill  == 0)
+			{
+				skillIce();
+				skillf = 1;
+			}
+			indexskill = s_slow.MenuMouseClick(x, y);
+			if (indexskill  == 0)
+			{
+				skillSlow();
+				skillf = 2;
+			}
+			indexskill  = s_del.MenuMouseClick(x, y);					//删除技能
+			if (indexskill  == 0)
+			{
+				skillDel();
+			}
+			indexskill  = s_life.MenuMouseClick(x, y);
+			if (indexskill  == 0)
+			{
+				skillLife();
+			}
 
-			int indexf = choosefan.MenuMouseClick(x, y);
+			if (x >= 70 && x <= 1052 && y >= 56 && y <= 584)
+			{
+				for (int i = 0; i < npc_set.size(); i++)
+				{
+					if(npc_set.at(i)->CollideWithMouse(x, y, 2))
+					{ 
+						if (focused != 0 && npc_set.at(focused - 1)->CollideWithMouse(x, y, 2))
+						{
+							focused = 0;
+							break;
+						}
+						else if (npc_set.at(i)->CollideWithMouse(x, y, 2) && focused != i + 1)
+						{
+							focused = i + 1;
+							fx = x;
+							fy = y;
+							focusedm = 1;
+							break;
+						}
+					}
+				}
+				for (int i = 0; i < proper_set.size(); i++)
+				{
+					if (focused != 0 && proper_set.at(focused - 1)->CollideWithMouse(x, y, 2))
+					{
+						focused = 0;
+						break;
+					}
+					else if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused != i + 1)
+					{
+						focused = i + 1;
+						fx = x;
+						fy = y;
+						focusedm = 0;
+						break;
+					}
+				}
+				//炮塔
+				int indexf = choosefan.MenuMouseClick(x, y);
 			int indexbs = choosebluestar.MenuMouseClick(x, y);
 			int indexb = choosebottle.MenuMouseClick(x, y);
 			int indexs = chooseshit.MenuMouseClick(x, y);
@@ -605,7 +736,7 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			}
 			up2 = 1;
 
-			
+		}	
 		}
 	}
 	else if (GameState == GAME_PAUSE)
@@ -1393,6 +1524,24 @@ void GraphTest::LoadImg()
 	pause = new T_Graph(L"res\\menu\\zan.png");
 	light.LoadImageFile(L"res\\monster\\light.png");
 	luolife = new T_Graph(L"res\\tool\\life.png");
+	money[0] = new T_Graph(L"res\\price\\14.png");
+	money[1] = new T_Graph(L"res\\price\\50.png");
+	money[2] = new T_Graph(L"res\\price\\75.png");
+	money[3] = new T_Graph(L"res\\price\\85.png");
+	money[4] = new T_Graph(L"res\\price\\150.png");
+	money[5] = new T_Graph(L"res\\price\\168.png");
+	money[6] = new T_Graph(L"res\\price\\268.png");
+	money[7] = new T_Graph(L"res\\price\\999.png");
+	money[8] = new T_Graph(L"res\\price\\1000.png");
+	money[9] = new T_Graph(L"res\\price\\1500.png");
+	money[10] = new T_Graph(L"res\\price\\2500.png");
+	jin = new T_Graph(L"res\\menu\\jin.png");
+	yin = new T_Graph(L"res\\menu\\yin.png");
+	tong = new T_Graph(L"res\\menu\\tong.png");
+	wang = new T_Graph(L"res\\photo\\wyq.jpg");
+	zhang = new T_Graph(L"res\\photo\\zh.jpg");
+	bai = new T_Graph(L"res\\photo\\bai.jpg");
+	fo = new T_Graph(L"res\\tool\\focus.png");
 }
 
 void GraphTest::drawBlood(HDC hdc)
@@ -1518,7 +1667,7 @@ void GraphTest::updateNPCPos()
 	
 }
 
-void GraphTest::updateBombPos(T_Sprite* ts,int dir)
+void GraphTest::updateBombPos(T_Sprite* ts,int dir,int x,int y)
 {
 	//if (bomb == NULL) return;
 	if (ts->GetScore() == 5 || ts->GetScore() == 6) return;
@@ -1527,7 +1676,7 @@ void GraphTest::updateBombPos(T_Sprite* ts,int dir)
 	
 			if (ts->IsDead() == false && ts->IsVisible() == true )
 			{
-				switch (dir)
+				/*switch (dir)
 				{
 				case DIR_LEFT:
 					SpeedX = -ts->GetSpeed();
@@ -1557,10 +1706,21 @@ void GraphTest::updateBombPos(T_Sprite* ts,int dir)
 					nextStepY = ts->GetY() + ts->GetRatioSize().cy + ts->GetSpeed();
 
 					break;
-				}
-				int x = ts->GetX();
-				int y = ts->GetY();
-				ts->Move(SpeedX, SpeedY);
+				}*/
+				nextStepX = (x - ts->GetX()) + ts->GetSpeed();
+				nextStepY=(y-ts->GetY()) + ts->GetSpeed();
+				/*int x = ts->GetX();
+				int y = ts->GetY();*/
+				
+
+				if(x>ts->GetX()&&y>ts->GetY())
+					ts->Move(ts->GetSpeed(), ts->GetSpeed());
+				if (x>ts->GetX() && y<ts->GetY())
+					ts->Move(ts->GetSpeed(), -ts->GetSpeed());
+				if (x<ts->GetX() && y>ts->GetY())
+					ts->Move(-ts->GetSpeed(), ts->GetSpeed());
+				if (x<ts->GetX() && y<ts->GetY())
+					ts->Move(-ts->GetSpeed(), -ts->GetSpeed());
 
 				if (ts->GetX() <= -ts->GetWidth() || ts->GetX() >= wnd_width + ts->GetWidth() || ts->GetY() <= -ts->GetHeight() || ts->GetY() >= wnd_height + ts->GetHeight())
 				{

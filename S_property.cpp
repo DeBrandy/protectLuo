@@ -33,3 +33,58 @@ void S_property::Initiate(SPRITEINFO spInfo, PROPERTY pInfo)
 		colideHeight = (int)GetHeight();
 	}
 }
+bool S_property::CollideWith(T_Sprite * target, int distance)
+{
+	if (IsVisible())
+	{
+		//计算参与碰撞检测的角色矩形区域
+		RECT targetRect = *(target->GetCollideRect());
+		RECT hitRec;
+		hitRec.left = targetRect.left - distance;
+		hitRec.top = targetRect.top - distance;
+		hitRec.right = targetRect.right + distance;
+		hitRec.bottom = targetRect.bottom + distance;
+		RECT thisRect = *(this->GetCollideRect());
+		int cw = abs(thisRect.right - thisRect.left);
+		int tw = abs(hitRec.right - hitRec.left);
+		int ch = abs(thisRect.bottom - thisRect.top);
+		int th = abs(hitRec.bottom - hitRec.top);
+
+		//方式一：同时满足4个条件
+		return thisRect.left <= hitRec.right &&
+			hitRec.left <= thisRect.right &&
+			thisRect.top <= hitRec.bottom &&
+			hitRec.top <= thisRect.bottom;
+	}
+	else
+		return false;
+}
+bool S_property::CollideWithMouse(int x,int y, int distance)
+{
+	if (IsVisible())
+	{
+		RECT hitRec;
+		hitRec.left = x - distance;
+		hitRec.right = x + distance;
+		hitRec.top = y - distance;
+		hitRec.bottom = y + distance;
+		/*RECT hitRec;
+		hitRec.left = targetRect.left - distance;
+		hitRec.top = targetRect.top - distance;
+		hitRec.right = targetRect.right + distance;
+		hitRec.bottom = targetRect.bottom + distance;*/
+		RECT thisRect = *(this->GetCollideRect());
+		int cw = abs(thisRect.right - thisRect.left);
+		int tw = abs(hitRec.right - hitRec.left);
+		int ch = abs(thisRect.bottom - thisRect.top);
+		int th = abs(hitRec.bottom - hitRec.top);
+
+		//方式一：同时满足4个条件
+		return thisRect.left <= hitRec.right &&
+			hitRec.left <= thisRect.right &&
+			thisRect.top <= hitRec.bottom &&
+			hitRec.top <= thisRect.bottom;
+	}
+	else
+		return false;
+}
