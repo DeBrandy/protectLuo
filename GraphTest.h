@@ -55,15 +55,18 @@ private:
 	int wnd_width, wnd_height;			//游戏窗口宽高
 	int scn_width, scn_height;			//场景宽高
 	POINT mouse_pt;						//当前鼠标位置
-
+	//----------帧计数器------------
 	int frameCount = 0;					//帧计数器
 	int MaxFrameCount = 4000;			//总帧数
 	int frames = 0;						//技能帧技术
 
 	int frameTime = 0;             //倒数帧计数器
 	int monsterDead = 0;           //怪物死亡数量
-
+	//---------flag------
 	int skillf;						//冰冻：1，减速2
+	int focused;					//锁定
+	int fx;							//锁定的x坐标
+	int fy;							//锁定的y坐标
 
 	//----------图片资源------------
 	T_Graph* lifeImg;				//萝卜生命图片
@@ -85,6 +88,7 @@ private:
 	T_Graph* wang;                  //王一清
 	T_Graph* zhang;					//张涵
 	T_Graph* bai;					//白星宇
+	T_Graph* fo;					//锁定图片
 
 	//----------菜单类对象-----------
 	T_Menu t_menu;                  //游戏菜单类的对象

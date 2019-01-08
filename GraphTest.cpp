@@ -294,6 +294,12 @@ void GraphTest::GamePaint(HDC hdc)
 		choosesun.DrawMenu(hdc);
 		chooselevel.DrawMenu(hdc);
 		countDown(hdc);
+		if (focused == 1)
+		{
+			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 0, 0, 30, 36, 1);
+			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+			fo->PaintRegion(fo->GetBmpHandle(), hdc, fx, fy, 30, 0, 30, 36, 1);
+		}
 		if (frameTime == 81)
 			updateProLife(hdc);
 		updateNPCLife(hdc);
@@ -526,7 +532,8 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			chooselevel.MenuMouseMove(x, y);
 		}
 		if (ActionType == MOUSE_LCLICK)
-		{
+		{	
+			//菜单
 			int index = run_return.MenuMouseClick(x, y);
 			if (index == 0)
 			{
@@ -555,7 +562,7 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 				setMenu(&run_start, 56, 56, L"res\\menu\\zan.png", setItems);
 				GameState = GAME_PAUSE;
 			}
-
+			//技能
 			int indexs = s_ice.MenuMouseClick(x, y);					//冰冻技能
 			if (indexs == 0)
 			{
@@ -578,104 +585,119 @@ void GraphTest::GameMouseAction(int x, int y, int ActionType)
 			{
 				skillLife();
 			}
-			int indexf = choosefan.MenuMouseClick(x, y);
-			/*int indexbs = choosebluestar.MenuMouseClick(x, y);
-			int indexb = choosebottle.MenuMouseClick(x, y);
-			int indexs = chooseshit.MenuMouseClick(x, y);
-			int indexsn = choosesnow.MenuMouseClick(x, y);
-			int indexsun = choosesun.MenuMouseClick(x, y);*/
 
-			
-			
-			if (indexf == 0)
+			if (x >= 70 && x <= 1052 && y >= 56 && y <= 584)
 			{
-				move = 0;
-				towerkind = 1;
-				towerflag = 1;
-				vSpriteSet::iterator p;
-				vSpriteSet::iterator p1;
-				
-							LoadPlayer(0, 0);
-							LoadBomb(0, 0);
-				
-			}
-			if (towerflag == 1&&move==1&&player.size()>0&& player.back()->active == true)
-			{
-				
-				player.back()->SetPosition(x - 113, y - 113);
-				bomb.back()->SetPosition(x - 113, y - 113);
-
-				player.back()->SetVisible(true);
-				bomb.back()->SetVisible(true);
-				player.back()->active = false;
-				move = 0;
-			}
-			move = 1;
-			int indexl = chooselevel.MenuMouseClick(x, y);
-			
-			vSpriteSet::iterator p;
-			vSpriteSet::iterator p1;
-			if (indexl == 0)
-			{
-				up2 = 0;
-				up1 = 1;
-			}
-			if(up1==1&&up2==1)
-			{
-				for (p = player.begin(), p1 = bomb.begin(); p != player.end(), p1 != bomb.end(); p++, p1++)
+				for (int i = 0; i < proper_set.size(); i++)
 				{
-					if (x >= (*p)->GetX() && x <= ((*p)->GetX() + (*p)->GetRatioSize().cx) && y >= (*p)->GetY() && y <= ((*p)->GetY() + (*p)->GetRatioSize().cy))
+					if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused == 0)
 					{
-						
-						(*p)->level++;
-						UpdateTowerLevel(*p);
-						(*p1)->level++;
-						UpdateBombLevel(*p1);
+						focused = 1;
+						fx = x;
+						fy = y;
 					}
-					else
+					else if (proper_set.at(i)->CollideWithMouse(x, y, 2) && focused == 1)
 					{
-						
+						focused = 0;
 					}
 				}
-				up1 = 0;
-			}
-			up2 = 1;
+				//炮塔
+				int indexf = choosefan.MenuMouseClick(x, y);
+				/*int indexbs = choosebluestar.MenuMouseClick(x, y);
+				int indexb = choosebottle.MenuMouseClick(x, y);
+				int indexs = chooseshit.MenuMouseClick(x, y);
+				int indexsn = choosesnow.MenuMouseClick(x, y);
+				int indexsun = choosesun.MenuMouseClick(x, y);*/
+				if (indexf == 0)
+				{
+					move = 0;
+					towerkind = 1;
+					towerflag = 1;
+					vSpriteSet::iterator p;
+					vSpriteSet::iterator p1;
 
-			/*if (indexbs == 0)
-			{
-			towerkind = 2;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
+					LoadPlayer(0, 0);
+					LoadBomb(0, 0);
+
+				}
+				if (towerflag == 1 && move == 1 && player.size()>0 && player.back()->active == true)
+				{
+
+					player.back()->SetPosition(x - 113, y - 113);
+					bomb.back()->SetPosition(x - 113, y - 113);
+
+					player.back()->SetVisible(true);
+					bomb.back()->SetVisible(true);
+					player.back()->active = false;
+					move = 0;
+				}
+				move = 1;
+				int indexl = chooselevel.MenuMouseClick(x, y);
+
+				vSpriteSet::iterator p;
+				vSpriteSet::iterator p1;
+				if (indexl == 0)
+				{
+					up2 = 0;
+					up1 = 1;
+				}
+				if (up1 == 1 && up2 == 1)
+				{
+					for (p = player.begin(), p1 = bomb.begin(); p != player.end(), p1 != bomb.end(); p++, p1++)
+					{
+						if (x >= (*p)->GetX() && x <= ((*p)->GetX() + (*p)->GetRatioSize().cx) && y >= (*p)->GetY() && y <= ((*p)->GetY() + (*p)->GetRatioSize().cy))
+						{
+
+							(*p)->level++;
+							UpdateTowerLevel(*p);
+							(*p1)->level++;
+							UpdateBombLevel(*p1);
+						}
+						else
+						{
+
+						}
+					}
+					up1 = 0;
+				}
+				up2 = 1;
+
+				/*if (indexbs == 0)
+				{
+				towerkind = 2;
+				towerflag = 1;
+				LoadPlayer(x + 100, y);
+				LoadBomb(x + 100, y);
+				}
+				if (indexb == 0)
+				{
+				towerkind = 3;
+				towerflag = 1;
+				LoadPlayer(x + 100, y);
+				LoadBomb(x + 100, y);
+				}
+				if (indexs == 0)
+				{
+				towerkind = 4;
+				towerflag = 1;
+				LoadPlayer(x + 100, y);
+				LoadBomb(x + 100, y);
+				}
+				if (indexsn == 0)
+				{
+				towerkind = 5;
+				towerflag = 1;
+				LoadPlayer(x + 100, y);
+				LoadBomb(x + 100, y);
+				}
+				if (indexsun == 0)
+				{
+				towerkind = 6;
+				towerflag = 1;
+				LoadPlayer(x + 100, y);
+				LoadBomb(x + 100, y);
+				}*/
 			}
-			if (indexb == 0)
-			{
-			towerkind = 3;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexs == 0)
-			{
-			towerkind = 4;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexsn == 0)
-			{
-			towerkind = 5;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}
-			if (indexsun == 0)
-			{
-			towerkind = 6;
-			towerflag = 1;
-			LoadPlayer(x + 100, y);
-			LoadBomb(x + 100, y);
-			}*/
 		}
 	}
 	else if (GameState == GAME_PAUSE)
@@ -1530,6 +1552,7 @@ void GraphTest::LoadImg()
 	wang = new T_Graph(L"res\\photo\\wyq.jpg");
 	zhang = new T_Graph(L"res\\photo\\zh.jpg");
 	bai = new T_Graph(L"res\\photo\\bai.jpg");
+	fo = new T_Graph(L"res\\tool\\focus.png");
 }
 
 void GraphTest::drawBlood(HDC hdc,int i)

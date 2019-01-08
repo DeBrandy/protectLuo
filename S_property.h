@@ -21,5 +21,7 @@ public:
 	int getBloodh() { return bloodh; }
 	int getBlood() { return blood; }
 	boolean gethurt() { return hurt; }
+	bool CollideWith(T_Sprite * target, int distance);
+	bool CollideWithMouse(int x, int y, int distance);
 };
 
